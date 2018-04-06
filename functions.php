@@ -59,3 +59,17 @@ function ks_customize_register($wp_customize) {
     $wp_customize->remove_control('site_icon');
 }
 add_action('customize_register', 'ks_customize_register', 20);  
+
+/**
+ * Gravity Forms hide "Add Form" WYSIWYG button
+ */
+add_filter('gform_display_add_form_button', '__return_false');
+
+/**
+ * Add favicon
+ */
+function ks_favicon() {
+  echo '<link rel="icon" type="image/x-icon" href="' . get_stylesheet_directory_uri() . '/images/favicon.ico" />';
+}
+add_action('wp_head', 'ks_favicon');
+add_action('admin_head', 'ks_favicon');
