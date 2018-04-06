@@ -51,3 +51,11 @@ add_action('wp_enqueue_scripts', 'kinectiv_start_scripts');
 if (function_exists('acf_add_options_page')) {
     acf_add_options_page('Theme Options');
 }
+
+/**
+ * Remove Site Icon control from Theme Customization
+ */
+function ks_customize_register($wp_customize) {
+    $wp_customize->remove_control('site_icon');
+}
+add_action('customize_register', 'ks_customize_register', 20);  
