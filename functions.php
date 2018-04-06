@@ -73,3 +73,47 @@ add_action('admin_head', 'ks_favicon');
  * Gravity Forms hide "Add Form" WYSIWYG button
  */
 add_filter('gform_display_add_form_button', '__return_false');
+
+/**
+ * Disable comments
+ */
+function ks_disable_comments_post_types_support() {
+	$post_types = get_post_types();
+	foreach ($post_types as $post_type) {
+		if(post_type_supports($post_type, 'comments')) {
+			remove_post_type_support($post_type, 'comments');
+			remove_post_type_support($post_type, 'trackbacks');
+		}
+	}
+}
+add_action('admin_init', 'ks_disable_comments_post_types_support'); // disable support for comments and trackbacks for all post types
+
+add_filter('comments_open', '__return_false', 20); // close comments
+add_filter('pings_open', '__return_false', 20); // close pings
+
+add_filter('comments_array', '__return_empty_array'); // return empty comments array
+
+function ks_disable_comments_admin_menu() {
+	remove_menu_page('edit-comments.php');
+    remove_submenu_page('options-general.php', 'options-discussion.php');
+}
+add_action('admin_menu', 'ks_disable_comments_admin_menu'); // remove comments and discussion settings from admin menu
+
+function ks_disabled_comments_admin_bar($wp_admin_bar) {
+    $wp_admin_bar->remove_node('comments');
+}
+add_action('admin_bar_menu', 'ks_disabled_comments_admin_bar', 999); // remove comments links from admin bar
+
+function ks_disable_comments_admin_redirect() {
+	global $pagenow;
+	if ($pagenow == 'edit-comments.php' || $pagenow == 'options-discussion.php') {
+		wp_redirect(admin_url());
+        exit;
+	}
+}
+add_action('admin_init', 'ks_disable_comments_admin_redirect'); // redirect any user trying to access comments page
+
+function ks_disable_comments_dashboard() {
+	remove_meta_box('dashboard_recent_comments', 'dashboard', 'normal');
+}
+add_action('admin_init', 'ks_disable_comments_dashboard'); // remove comments metabox from dashboard
