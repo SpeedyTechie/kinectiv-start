@@ -10,8 +10,8 @@ Description: A theme by Kinectiv
 # Normalize
 # Typography
 # Elements
-# Navigation
-	## Links
+# Content
+# Links
 # Accessibility
 # Alignments
 # Media
@@ -359,7 +359,7 @@ html {
 	box-sizing: inherit; /* Inherit box-sizing to make it easier to change the property for components that leverage other behavior; see https://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/ */
 }
 body {
-	background: #fff;
+	background: #eee;
 }
 hr {
 	background-color: #ccc;
@@ -400,10 +400,22 @@ table {
 }
 
 /*--------------------------------------------------------------
-# Navigation
+# Content
 --------------------------------------------------------------*/
+.site {
+    background-color: #fff;
+    margin: 0 auto;
+    box-shadow: 0 0 20px rgba(40, 40, 40, 0.4);
+}
+
+@media (min-width: 2100px) {
+    .site {
+        max-width: 2000px;
+    }
+}
+
 /*--------------------------------------------------------------
-## Links
+# Links
 --------------------------------------------------------------*/
 a {
 	color: royalblue;
