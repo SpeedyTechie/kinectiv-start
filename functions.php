@@ -39,7 +39,6 @@ function kinectiv_start_scripts() {
 	wp_enqueue_style('kinectiv-start-style', get_stylesheet_directory_uri() . '/style.min.css', array(), '0.1.0');
 //	wp_enqueue_style('kinectiv-start-vendor-style', get_stylesheet_directory_uri() . '/css/vendor.min.css', array(), '1.0.0');
     
-    wp_deregister_script('wp-embed'); // disable oembed
     wp_deregister_script('jquery');
     wp_enqueue_script('jquery', 'https://code.jquery.com/jquery-1.12.4.min.js', array(), '1.12.4', false);
 	wp_enqueue_script('kinectiv-start-script', get_template_directory_uri() . '/js/script.min.js', array('jquery'), '0.1.0', true);
@@ -118,3 +117,17 @@ function ks_disable_comments_dashboard() {
 	remove_meta_box('dashboard_recent_comments', 'dashboard', 'normal');
 }
 add_action('admin_init', 'ks_disable_comments_dashboard'); // remove comments metabox from dashboard
+
+/**
+ * Remove oEmbed discovery links and REST API endpoint
+ */
+remove_action('wp_head', 'wp_oembed_add_discovery_links');
+remove_action('rest_api_init', 'wp_oembed_register_route');
+
+/**
+ * Remove unnecessary header code
+ */
+remove_action('wp_head', 'rsd_link'); // remove RSD link used by blog clients
+remove_action('wp_head', 'wlwmanifest_link'); // remove Windows Live Writer client link
+remove_action('wp_head', 'wp_shortlink_wp_head'); // remove shortlink
+remove_action('wp_head', 'wp_generator'); // remove generator meta tag

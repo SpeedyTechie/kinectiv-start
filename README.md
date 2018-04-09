@@ -8,7 +8,6 @@ A WordPress starter theme for Kinectiv websites
 * Update `Theme Name: Kinectiv Start` at the top of `style.css` to include the name for your theme.
 * Find all occurences of `kinectiv-start-` (handle prefixes) and `kinectiv_start_` (function name prefixes) in `functions.php` and update them to match the name of your theme.
 * Update `register_nav_menus()` in `functions.php` to register any nav menus you will need for your theme. If no nav menus are needed, remove the function call.
-* If you'd like to allow oEmbed to automatically replace URLs pasted in the content editor with embedded content, remove `wp_deregister_script('wp-embed');` from `functions.php`.
 * If your theme does not require an ACF Theme Options page, remove the `Add ACF options page` section from `functions.php`.
 * If your theme requires comments, remove the `Disable comments` section from `functions.php`.
 
