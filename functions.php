@@ -133,7 +133,7 @@ remove_action('wp_head', 'wp_shortlink_wp_head'); // remove shortlink
 remove_action('wp_head', 'wp_generator'); // remove generator meta tag
 
 /**
- * Set TinyMCE to paste as text by default
+ * Enable TinyMCE paste as text by default
  */
 function ks_tinymce_paste_as_text($init) {
     $init['paste_as_text'] = true;
