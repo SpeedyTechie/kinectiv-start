@@ -131,3 +131,13 @@ remove_action('wp_head', 'rsd_link'); // remove RSD link used by blog clients
 remove_action('wp_head', 'wlwmanifest_link'); // remove Windows Live Writer client link
 remove_action('wp_head', 'wp_shortlink_wp_head'); // remove shortlink
 remove_action('wp_head', 'wp_generator'); // remove generator meta tag
+
+/**
+ * Set TinyMCE to paste as text by default
+ */
+function ks_tinymce_paste_as_text($init) {
+    $init['paste_as_text'] = true;
+    
+    return $init;
+}
+add_filter('tiny_mce_before_init', 'ks_tinymce_paste_as_text');
