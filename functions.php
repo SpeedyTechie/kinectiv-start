@@ -141,3 +141,15 @@ function ks_tinymce_paste_as_text($init) {
     return $init;
 }
 add_filter('tiny_mce_before_init', 'ks_tinymce_paste_as_text');
+
+/**
+ * Customize ACF WYSIWYG toolbars
+ */
+function ks_acf_toolbars( $toolbars ) {
+    // Add Minimal toolbar
+	$toolbars['Minimal'] = array();
+	$toolbars['Minimal'][1] = array('bold' , 'italic', 'link');
+    
+	return $toolbars;
+}
+add_filter('acf/fields/wysiwyg/toolbars' , 'ks_acf_toolbars');
