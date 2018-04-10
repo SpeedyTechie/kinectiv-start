@@ -32,3 +32,4 @@ A WordPress starter theme for Kinectiv websites
 * Add any template part files to the `template-parts` folder.
 * Add images and graphics to the `images` folder.
 * Delete any of the following files that your theme will not use: `archive.php`, `page.php`, `search.php`, `single.php`.
+* Remember to udpate CSS and JS version numbers in `functions.php` any time you push changes to a live site (to ensure cached files are updated).
