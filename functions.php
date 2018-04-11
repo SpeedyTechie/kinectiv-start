@@ -24,6 +24,7 @@ if (!function_exists('kinectiv_start_setup')) {
 }
 add_action('after_setup_theme', 'kinectiv_start_setup');
 
+
 /**
  * Set the content width in pixels
  */
@@ -31,6 +32,7 @@ function kinectiv_start_content_width() {
 	$GLOBALS['content_width'] = apply_filters('kinectiv_start_content_width', 640);
 }
 add_action('after_setup_theme', 'kinectiv_start_content_width', 0);
+
 
 /**
  * Enqueue scripts and styles
@@ -45,12 +47,14 @@ function kinectiv_start_scripts() {
 }
 add_action('wp_enqueue_scripts', 'kinectiv_start_scripts');
 
+
 /**
  * Add ACF options page
  */
 if (function_exists('acf_add_options_page')) {
     acf_add_options_page('Theme Options');
 }
+
 
 /**
  * Remove Site Icon control from Theme Customization
@@ -59,6 +63,7 @@ function ks_customize_register($wp_customize) {
     $wp_customize->remove_control('site_icon');
 }
 add_action('customize_register', 'ks_customize_register', 20);  
+
 
 /**
  * Add site icon
@@ -69,10 +74,12 @@ function ks_favicon() {
 add_action('wp_head', 'ks_favicon');
 add_action('admin_head', 'ks_favicon');
 
+
 /**
  * Gravity Forms hide "Add Form" WYSIWYG button
  */
 add_filter('gform_display_add_form_button', '__return_false');
+
 
 /**
  * Disable comments
@@ -118,11 +125,13 @@ function ks_disable_comments_dashboard() {
 }
 add_action('admin_init', 'ks_disable_comments_dashboard'); // remove comments metabox from dashboard
 
+
 /**
  * Remove oEmbed discovery links and REST API endpoint
  */
 remove_action('wp_head', 'wp_oembed_add_discovery_links');
 remove_action('rest_api_init', 'wp_oembed_register_route');
+
 
 /**
  * Remove unnecessary header code
@@ -131,6 +140,7 @@ remove_action('wp_head', 'rsd_link'); // remove RSD link used by blog clients
 remove_action('wp_head', 'wlwmanifest_link'); // remove Windows Live Writer client link
 remove_action('wp_head', 'wp_shortlink_wp_head'); // remove shortlink
 remove_action('wp_head', 'wp_generator'); // remove generator meta tag
+
 
 /**
  * Enable TinyMCE paste as text by default
@@ -141,6 +151,7 @@ function ks_tinymce_paste_as_text($init) {
     return $init;
 }
 add_filter('tiny_mce_before_init', 'ks_tinymce_paste_as_text');
+
 
 /**
  * Customize ACF WYSIWYG toolbars
