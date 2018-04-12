@@ -1,7 +1,8 @@
-/* Disable the wpview TinyMCE plugin for ACF WYSIWYG fields with the class ks-no-embeds */
+/* Disable the wpview TinyMCE plugin for ACF WYSIWYG fields (unless the enabled in settings) */
 
 acf.add_filter('wysiwyg_tinymce_settings', function( mceInit, id, $field ){
-    if ($field.hasClass('ks-no-embeds')) {
+    console.log($field);
+    if ($field.hasClass('ks-disable-autoembed')) {
         let plugins = mceInit['plugins'].split(',');
         let wpviewIndex = plugins.indexOf('wpview');
         

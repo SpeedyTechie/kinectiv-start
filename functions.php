@@ -170,3 +170,46 @@ function ks_acf_toolbars( $toolbars ) {
 	return $toolbars;
 }
 add_filter('acf/fields/wysiwyg/toolbars' , 'ks_acf_toolbars');
+
+
+/**
+ * Disable autoembed for ACF WYSIWYG fields (and add option to re-enable)
+ */
+function ks_acf_wysiwyg_disable_auto_embed($value, $post_id, $field) {
+    if(!empty($GLOBALS['wp_embed']) && !$field['enable_autoembed']) {
+	   remove_filter('acf_the_content', array( $GLOBALS['wp_embed'], 'autoembed' ), 8);
+    }
+	
+	return $value;
+}
+add_filter('acf/format_value/type=wysiwyg', 'ks_acf_wysiwyg_disable_auto_embed', 10, 3); // disable autoembed
+
+function ks_acf_wysiwyg_disable_auto_embed_after($value, $post_id, $field) {
+    if(!empty($GLOBALS['wp_embed']) && !$field['enable_autoembed']) {
+	   add_filter('acf_the_content', array( $GLOBALS['wp_embed'], 'autoembed' ), 8);
+    }
+	
+	return $value;
+}
+add_filter('acf/format_value/type=wysiwyg', 'ks_acf_wysiwyg_disable_auto_embed_after', 20, 3); // re-enable autoembed after value is formatted
+
+function ks_acf_wysiwyg_disable_auto_embed_setting($field) {
+	acf_render_field_setting($field, array(
+		'label'	=> 'Enable Autoembed',
+		'name' => 'enable_autoembed',
+		'type' => 'true_false',
+        'ui' => 1
+	));
+}
+add_action('acf/render_field_settings/type=wysiwyg', 'ks_acf_wysiwyg_disable_auto_embed_setting'); // add setting to enable/disable
+
+function ks_acf_wysiwyg_disable_auto_embed_class($field) {
+    if (!$field['enable_autoembed']) {
+        $field['wrapper']['class'] = explode(' ', $field['wrapper']['class']);
+        $field['wrapper']['class'][] = 'ks-disable-autoembed';
+        $field['wrapper']['class'] = implode(' ', $field['wrapper']['class']);
+    }
+
+    return $field;
+}
+add_filter('acf/prepare_field/type=wysiwyg', 'ks_acf_wysiwyg_disable_auto_embed_class'); // add class to wrapper (so JS knows to disable the wpview TinyMCE plugin)
