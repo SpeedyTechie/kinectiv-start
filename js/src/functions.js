@@ -37,8 +37,17 @@ function initEnhanceMouseFocus() {
 
 
 
+/* FitVids */
+
+function initFitVids() {
+    $('.site-content').fitVids();
+}
+
+
+
 /* General */
 
 $(function() {
+    initFitVids();
     initEnhanceMouseFocus();
 });
