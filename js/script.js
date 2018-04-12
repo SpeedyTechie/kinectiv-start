@@ -24,7 +24,9 @@ function enhanceMouseFocusUpdate() {
 }
 
 function initEnhanceMouseFocus() {
+    enhanceMouseFocusElements = $();
     enhanceMouseFocusEnabled = true;
+    
     enhanceMouseFocusUpdate();
     
     // update focusable elements on Gravity Forms render
