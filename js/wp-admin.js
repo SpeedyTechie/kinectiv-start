@@ -3,8 +3,8 @@
 acf.add_filter('wysiwyg_tinymce_settings', function( mceInit, id, $field ){
     console.log($field);
     if ($field.hasClass('ks-disable-autoembed')) {
-        let plugins = mceInit['plugins'].split(',');
-        let wpviewIndex = plugins.indexOf('wpview');
+        var plugins = mceInit['plugins'].split(',');
+        var wpviewIndex = plugins.indexOf('wpview');
         
         if (wpviewIndex > -1) {
             plugins.splice(wpviewIndex, 1);
