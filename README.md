@@ -27,6 +27,7 @@ A WordPress starter theme for Kinectiv websites
 * Update the `background-color` of `body` in the `Elements` section in `style.css` if necessary. This color is used to fill extra space on screens wider than 2100px.
 * Update the `background-color` of `.site` in the `Content` section in `style.css` if necessary. This is the main background color of the site.
 * Update the default link styles in the `Links` section of `style.css`.
+* Remove the `Gravity Forms` section from `style.css` if the Gravity Forms plugin will not be used.
 
 #### Other Notes
 * Delete any of the following files that your theme will not use: `archive.php`, `page.php`, `search.php`, `single.php`.

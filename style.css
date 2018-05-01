@@ -17,6 +17,7 @@ Description: A theme by Kinectiv
 # Media
 	## Captions
 	## Galleries
+# Gravity Forms
 # Blocks
 --------------------------------------------------------------*/
 /*--------------------------------------------------------------
@@ -542,6 +543,18 @@ object {
 }
 .gallery-caption {
 	display: block;
+}
+
+/*--------------------------------------------------------------
+# Gravity Forms
+--------------------------------------------------------------*/
+.gform_wrapper .gf_hidden,
+.gform_wrapper .gform_hidden,
+.gform_wrapper input.gform_hidden,
+.gform_wrapper input[type=hidden],
+.gform_wrapper .gf_invisible,
+.gform_wrapper .gfield_visibility_hidden {
+    display: none;
 }
 
 /*--------------------------------------------------------------
