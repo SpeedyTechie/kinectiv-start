@@ -133,6 +133,25 @@ add_action('admin_init', 'ks_disable_comments_dashboard'); // remove comments me
 
 
 /**
+ * Disable search
+ */
+function ks_disable_search($query, $error = true) {
+    if (is_search() && !is_admin()) {
+        $query->is_search = false;
+        $query->query_vars[s] = false;
+        $query->query[s] = false;
+
+        if ($error == true) {
+            $query->is_404 = true;
+        }
+    }
+}
+
+add_action('parse_query', 'ks_disable_search');
+add_filter('get_search_form', '__return_null');
+
+
+/**
  * Remove oEmbed discovery links and REST API endpoint
  */
 remove_action('wp_head', 'wp_oembed_add_discovery_links');
