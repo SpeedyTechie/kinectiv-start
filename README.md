@@ -10,6 +10,7 @@ A WordPress starter theme for Kinectiv websites
 * Update `register_nav_menus()` in `functions.php` to register any nav menus you will need for your theme. If no nav menus are needed, remove the function call.
 * If your theme does not require an ACF Theme Options page, remove the `Add ACF options page` section from `functions.php`.
 * If your theme requires comments, remove the `Disable comments` section from `functions.php`.
+* If your theme requires search, remove the `Disable search` section from `functions.php`.
 
 #### Gulp
 * Run `npm install` to install all needed packages.
