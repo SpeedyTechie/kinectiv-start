@@ -112,10 +112,10 @@ function ks_disable_comments_admin_menu() {
 }
 add_action('admin_menu', 'ks_disable_comments_admin_menu'); // remove comments and discussion settings from admin menu
 
-function ks_disabled_comments_admin_bar($wp_admin_bar) {
+function ks_disable_comments_admin_bar($wp_admin_bar) {
     $wp_admin_bar->remove_node('comments');
 }
-add_action('admin_bar_menu', 'ks_disabled_comments_admin_bar', 999); // remove comments links from admin bar
+add_action('admin_bar_menu', 'ks_disable_comments_admin_bar', 999); // remove comments links from admin bar
 
 function ks_disable_comments_admin_redirect() {
 	global $pagenow;
