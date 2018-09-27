@@ -9,7 +9,7 @@ if (!function_exists('kinectiv_start_setup')) {
 
 		// Register nav menus
 		register_nav_menus(array(
-			'menu-1' => 'Primary Menu'
+			'primary-menu' => 'Primary Menu'
 		));
 
 		// Switch default core markup for search form, comment form, and comments to output valid HTML5
