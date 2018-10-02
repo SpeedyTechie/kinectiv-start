@@ -150,6 +150,20 @@ function ks_disable_search($query, $error = true) {
 add_action('parse_query', 'ks_disable_search');
 add_filter('get_search_form', '__return_null');
 
+/**
+ * Hide Posts from admin
+ */
+function ks_disable_posts_admin_menu() {
+    remove_menu_page('edit.php');
+}
+add_action('admin_menu', 'ks_disable_posts_admin_menu'); // remove posts link from admin menu
+
+function ks_disable_posts_admin_bar() {
+    global $wp_admin_bar;
+    $wp_admin_bar->remove_menu('new-post');
+}
+add_action('wp_before_admin_bar_render', 'ks_disable_posts_admin_bar'); // remove new post link from admin bar
+
 
 /**
  * Disable archive pages for Posts
