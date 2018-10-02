@@ -152,6 +152,30 @@ add_filter('get_search_form', '__return_null');
 
 
 /**
+ * Disable archive pages for Posts
+ */
+function ks_disable_post_archives($query){
+    if((!is_front_page() && is_home()) || is_category() || is_tag() || is_author() || is_date()) {
+        global $wp_query;
+        $wp_query->set_404();
+        status_header(404);
+        nocache_headers();
+    }
+}
+add_action('parse_query', 'ks_disable_post_archives');
+
+
+/**
+ * Unregister default taxonomies for Posts
+ */
+function ks_unregister_default_taxonomies() {
+    unregister_taxonomy_for_object_type('category', 'post'); // unregister categories for posts
+    unregister_taxonomy_for_object_type('post_tag', 'post'); // unregister tags for posts
+}
+add_action('init', 'ks_unregister_default_taxonomies');
+
+
+/**
  * Remove oEmbed discovery links and REST API endpoint
  */
 remove_action('wp_head', 'wp_oembed_add_discovery_links');

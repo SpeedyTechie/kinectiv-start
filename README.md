@@ -23,6 +23,8 @@ A WordPress starter theme for Kinectiv websites
 * If your theme does not require an ACF Theme Options page, remove the `Add ACF options page` section from `functions.php`.
 * If your theme requires comments, remove the `Disable comments` section from `functions.php`.
 * If your theme requires search, remove the `Disable search` section from `functions.php`.
+* If your theme requires post archive pages, remove the `Disable archive pages for Posts` section from `functions.php` (or customize to fit your needs).
+* If your theme requires the Category or Tag taxonomies for Posts, remove the the `Disable default taxonomies for Posts` section (or the relevant lines) from `functions.php`.
 * Replace `images/favicon.ico` with the site icon for your theme.
 * Update the default `color`, `font-family`, and any other properties as needed at the beginning of the `Typography` section in `style.css`.
 * Update the `background-color` of `body` in the `Elements` section in `style.css` if necessary. This color is used to fill extra space on screens wider than 2100px.
