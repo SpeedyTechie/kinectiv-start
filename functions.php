@@ -181,14 +181,38 @@ add_filter('tiny_mce_before_init', 'ks_tinymce_paste_as_text');
 /**
  * Customize ACF WYSIWYG toolbars
  */
-function ks_acf_toolbars( $toolbars ) {
+function ks_acf_toolbars($toolbars) {
     // Add Minimal toolbar
 	$toolbars['Minimal'] = array();
 	$toolbars['Minimal'][1] = array('bold' , 'italic', 'link');
     
 	return $toolbars;
 }
-add_filter('acf/fields/wysiwyg/toolbars' , 'ks_acf_toolbars');
+add_filter('acf/fields/wysiwyg/toolbars' , 'ks_acf_toolbars'); // add toolbars
+
+function ks_acf_wysiwyg_strip_tags($value, $post_id, $field) {
+    if ($field['enable_strip_tags']) {
+        if ($field['toolbar'] == 'basic') {
+            $value = strip_tags($value, '<p><strong><em><span><a><br><blockquote><del><ul><ol><li>');
+        } elseif ($field['toolbar'] == 'minimal') {
+            $value = strip_tags($value, '<p><strong><em><a><br>');
+        }
+    }
+    
+    return $value;
+}
+add_filter('acf/format_value/type=wysiwyg', 'ks_acf_wysiwyg_strip_tags', 10, 3); // strip tags from WYSIWYG content based on toolbar
+
+function ks_acf_wysiwyg_strip_tags_setting($field) {
+	acf_render_field_setting($field, array(
+		'label'	=> 'Strip Tags Based on Toolbar',
+        'instructions' => 'HTML tags not supported by the selected toolbar will be stripped',
+		'name' => 'enable_strip_tags',
+		'type' => 'true_false',
+        'ui' => 1
+	));
+}
+add_action('acf/render_field_settings/type=wysiwyg', 'ks_acf_wysiwyg_strip_tags_setting'); // add setting to enable/disable
 
 
 /**
