@@ -9,7 +9,7 @@ var cleancss = require('gulp-clean-css');
 gulp.task('css', function() {
     return gulp.src('style.css')
         .pipe(autoprefixer({browsers: ['> 0.5%', 'last 2 versions', 'Firefox ESR', 'not ie <= 8']}))
-        .pipe(cleancss({level: 2, rebase: false, inline: false}))
+        .pipe(cleancss({level: 1, rebase: false, inline: false}))
         .pipe(rename('style.min.css'))
         .pipe(gulp.dest(''));
 });
@@ -20,7 +20,7 @@ gulp.task('vendor-css', function() {
         .pipe(autoprefixer({browsers: ['> 0.5%', 'last 2 versions', 'Firefox ESR', 'not ie <= 8']}))
         .pipe(gulp.dest('css'))
         .pipe(rename('vendor.min.css'))
-        .pipe(cleancss({level: 2, rebase: false, inline: false}))
+        .pipe(cleancss({level: 1, rebase: false, inline: false}))
         .pipe(gulp.dest('css'));
 });
 
