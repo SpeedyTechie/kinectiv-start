@@ -2,15 +2,18 @@
 
 var enhanceMouseFocusActive = false;
 var enhanceMouseFocusEnabled = false;
-var enhanceMouseFocusElements = $(); // create an empty jQuery object for storing focusable elements
+var enhanceMouseFocusElements = $();
+var enhanceMouseFocusNewElements = $();
 
 
 function enhanceMouseFocusUpdate() {
     if (enhanceMouseFocusEnabled) {
-        enhanceMouseFocusElements = $('button, input[type="submit"], [tabindex]').not(enhanceMouseFocusElements); // add any new focusable elements
+        // add any new focusable elements
+        enhanceMouseFocusNewElements = $('button, input[type="submit"], [tabindex]').not(enhanceMouseFocusElements);
+        enhanceMouseFocusElements = enhanceMouseFocusElements.add(enhanceMouseFocusNewElements);
         
         // if an element gets focus due to a mouse click, prevent it from keeping focus
-        enhanceMouseFocusElements.mousedown(function() {
+        enhanceMouseFocusNewElements.mousedown(function() {
             enhanceMouseFocusActive = true;
             setTimeout(function(){
                 enhanceMouseFocusActive = false;
