@@ -240,6 +240,122 @@ add_filter('tiny_mce_before_init', 'ks_tinymce_paste_as_text');
 
 
 /**
+ * Customize ACF WYSIWYG toolbars
+ */
+function ks_acf_toolbars($toolbars) {
+    // Add Minimal toolbar
+	$toolbars['Minimal'] = array();
+	$toolbars['Minimal'][1] = array('bold' , 'italic', 'link');
+    
+	return $toolbars;
+}
+add_filter('acf/fields/wysiwyg/toolbars' , 'ks_acf_toolbars'); // add toolbars
+
+function ks_acf_wysiwyg_strip_tags($value, $post_id, $field) {
+    if ($field['enable_strip_tags']) {
+        if ($field['toolbar'] == 'basic') {
+            $value = strip_tags($value, '<p><strong><em><span><a><br><blockquote><del><ul><ol><li>');
+        } elseif ($field['toolbar'] == 'minimal') {
+            $value = strip_tags($value, '<p><strong><em><a><br>');
+        }
+    }
+    
+    return $value;
+}
+add_filter('acf/format_value/type=wysiwyg', 'ks_acf_wysiwyg_strip_tags', 10, 3); // strip tags from WYSIWYG content based on toolbar
+
+function ks_acf_wysiwyg_strip_tags_setting($field) {
+	acf_render_field_setting($field, array(
+		'label'	=> 'Strip Tags Based on Toolbar',
+        'instructions' => 'HTML tags not supported by the selected toolbar will be stripped',
+		'name' => 'enable_strip_tags',
+		'type' => 'true_false',
+        'ui' => 1
+	));
+}
+add_action('acf/render_field_settings/type=wysiwyg', 'ks_acf_wysiwyg_strip_tags_setting'); // add setting to enable/disable
+
+
+/**
+ * Disable autoembed for ACF WYSIWYG fields (and add option to re-enable)
+ */
+function ks_acf_wysiwyg_disable_auto_embed($value, $post_id, $field) {
+    if(!empty($GLOBALS['wp_embed']) && !$field['enable_autoembed']) {
+	   remove_filter('acf_the_content', array( $GLOBALS['wp_embed'], 'autoembed' ), 8);
+    }
+	
+	return $value;
+}
+add_filter('acf/format_value/type=wysiwyg', 'ks_acf_wysiwyg_disable_auto_embed', 10, 3); // disable autoembed
+
+function ks_acf_wysiwyg_disable_auto_embed_after($value, $post_id, $field) {
+    if(!empty($GLOBALS['wp_embed']) && !$field['enable_autoembed']) {
+	   add_filter('acf_the_content', array( $GLOBALS['wp_embed'], 'autoembed' ), 8);
+    }
+	
+	return $value;
+}
+add_filter('acf/format_value/type=wysiwyg', 'ks_acf_wysiwyg_disable_auto_embed_after', 20, 3); // re-enable autoembed after value is formatted
+
+function ks_acf_wysiwyg_disable_auto_embed_setting($field) {
+	acf_render_field_setting($field, array(
+		'label'	=> 'Enable Autoembed',
+		'name' => 'enable_autoembed',
+		'type' => 'true_false',
+        'ui' => 1
+	));
+}
+add_action('acf/render_field_settings/type=wysiwyg', 'ks_acf_wysiwyg_disable_auto_embed_setting'); // add setting to enable/disable
+
+function ks_acf_wysiwyg_disable_auto_embed_class($field) {
+    if (!$field['enable_autoembed']) {
+        $field['wrapper']['class'] = explode(' ', $field['wrapper']['class']);
+        $field['wrapper']['class'][] = 'ks-disable-autoembed';
+        $field['wrapper']['class'] = implode(' ', $field['wrapper']['class']);
+    }
+
+    return $field;
+}
+add_filter('acf/prepare_field/type=wysiwyg', 'ks_acf_wysiwyg_disable_auto_embed_class'); // add class to wrapper (so JS knows to disable the wpview TinyMCE plugin)
+
+
+/**
+ * Add option to post object, page link, and relationship fields to allow filtering by page template
+ */
+function ks_acf_template_filter_setting($field) {
+    acf_render_field_setting($field, array(
+        'label'	=> 'Filter by Page Template',
+        'name' => 'filter_template',
+        'type' => 'select',
+        'choices' => array_flip(get_page_templates()),
+        'multiple' => 1,
+        'ui' => 1,
+        'allow_null' => 1,
+        'placeholder' => 'All page templates'
+    ));
+}
+add_action('acf/render_field_settings/type=post_object', 'ks_acf_template_filter_setting'); // add setting to post object fields
+add_action('acf/render_field_settings/type=page_link', 'ks_acf_template_filter_setting'); // add setting to page_link fields
+add_action('acf/render_field_settings/type=relationship', 'ks_acf_template_filter_setting'); // add setting to relationship fields
+
+function ks_acf_template_filter_query($args, $field, $post_id) {
+    if ($field['filter_template']) {
+        $args['meta_query'] = array(
+            array(
+                'key' => '_wp_page_template',
+                'value' => $field['filter_template'],
+                'compare' => 'IN'
+            )
+        );
+    }
+	
+    return $args;
+}
+add_filter('acf/fields/post_object/query', 'ks_acf_template_filter_query', 10, 3); // update query for post object fields to include template filter
+add_filter('acf/fields/page_link/query', 'ks_acf_template_filter_query', 10, 3); // update query for page link fields to include template filter
+add_filter('acf/fields/relationship/query', 'ks_acf_template_filter_query', 10, 3); // update query for relationship fields to include template filter
+
+/**
  * Add maximum/minimum selection options to field types with multi-select functionality
  */
 function ks_acf_multi_min_max_settings($field) {
@@ -323,11 +439,12 @@ function ks_acf_multi_min_max_settings($field) {
         ));
     }
 }
-add_action('acf/render_field_settings/type=checkbox', 'ks_acf_multi_min_max_settings'); // add min/max settings to checkbox field type
-add_action('acf/render_field_settings/type=select', 'ks_acf_multi_min_max_settings'); // add min/max settings to select field type
-add_action('acf/render_field_settings/type=post_object', 'ks_acf_multi_min_max_settings'); // add min/max settings to post object field type
-add_action('acf/render_field_settings/type=taxonomy', 'ks_acf_multi_min_max_settings'); // add min/max settings to taxonomy field type
-add_action('acf/render_field_settings/type=user', 'ks_acf_multi_min_max_settings'); // add min/max settings to user field type
+add_action('acf/render_field_settings/type=checkbox', 'ks_acf_multi_min_max_settings'); // add min/max settings to checkbox fields
+add_action('acf/render_field_settings/type=select', 'ks_acf_multi_min_max_settings'); // add min/max settings to select fields
+add_action('acf/render_field_settings/type=post_object', 'ks_acf_multi_min_max_settings'); // add min/max settings to post object fields
+add_action('acf/render_field_settings/type=page_link', 'ks_acf_multi_min_max_settings'); // add min/max settings to page link fields
+add_action('acf/render_field_settings/type=taxonomy', 'ks_acf_multi_min_max_settings'); // add min/max settings to taxonomy fields
+add_action('acf/render_field_settings/type=user', 'ks_acf_multi_min_max_settings'); // add min/max settings to user fields
 
 function ks_acf_multi_min_max_validation($valid, $value, $field, $input) {
     if ($valid) {
@@ -361,88 +478,9 @@ function ks_acf_multi_min_max_validation($valid, $value, $field, $input) {
     
     return $valid;
 }
-add_action('acf/validate_value/type=checkbox', 'ks_acf_multi_min_max_validation', 10, 4); // validate min/max settings for checkbox field type
-add_action('acf/validate_value/type=select', 'ks_acf_multi_min_max_validation', 10, 4); // validate min/max settings for select field type
-add_action('acf/validate_value/type=post_object', 'ks_acf_multi_min_max_validation', 10, 4); // validate min/max settings for post object field type
-add_action('acf/validate_value/type=taxonomy', 'ks_acf_multi_min_max_validation', 10, 4); // validate min/max settings for taxonomy field type
-add_action('acf/validate_value/type=user', 'ks_acf_multi_min_max_validation', 10, 4); // validate min/max settings for user field type
-
-
-/**
- * Customize ACF WYSIWYG toolbars
- */
-function ks_acf_toolbars($toolbars) {
-    // Add Minimal toolbar
-	$toolbars['Minimal'] = array();
-	$toolbars['Minimal'][1] = array('bold' , 'italic', 'link');
-    
-	return $toolbars;
-}
-add_filter('acf/fields/wysiwyg/toolbars' , 'ks_acf_toolbars'); // add toolbars
-
-function ks_acf_wysiwyg_strip_tags($value, $post_id, $field) {
-    if ($field['enable_strip_tags']) {
-        if ($field['toolbar'] == 'basic') {
-            $value = strip_tags($value, '<p><strong><em><span><a><br><blockquote><del><ul><ol><li>');
-        } elseif ($field['toolbar'] == 'minimal') {
-            $value = strip_tags($value, '<p><strong><em><a><br>');
-        }
-    }
-    
-    return $value;
-}
-add_filter('acf/format_value/type=wysiwyg', 'ks_acf_wysiwyg_strip_tags', 10, 3); // strip tags from WYSIWYG content based on toolbar
-
-function ks_acf_wysiwyg_strip_tags_setting($field) {
-	acf_render_field_setting($field, array(
-		'label'	=> 'Strip Tags Based on Toolbar',
-        'instructions' => 'HTML tags not supported by the selected toolbar will be stripped',
-		'name' => 'enable_strip_tags',
-		'type' => 'true_false',
-        'ui' => 1
-	));
-}
-add_action('acf/render_field_settings/type=wysiwyg', 'ks_acf_wysiwyg_strip_tags_setting'); // add setting to enable/disable
-
-
-/**
- * Disable autoembed for ACF WYSIWYG fields (and add option to re-enable)
- */
-function ks_acf_wysiwyg_disable_auto_embed($value, $post_id, $field) {
-    if(!empty($GLOBALS['wp_embed']) && !$field['enable_autoembed']) {
-	   remove_filter('acf_the_content', array( $GLOBALS['wp_embed'], 'autoembed' ), 8);
-    }
-	
-	return $value;
-}
-add_filter('acf/format_value/type=wysiwyg', 'ks_acf_wysiwyg_disable_auto_embed', 10, 3); // disable autoembed
-
-function ks_acf_wysiwyg_disable_auto_embed_after($value, $post_id, $field) {
-    if(!empty($GLOBALS['wp_embed']) && !$field['enable_autoembed']) {
-	   add_filter('acf_the_content', array( $GLOBALS['wp_embed'], 'autoembed' ), 8);
-    }
-	
-	return $value;
-}
-add_filter('acf/format_value/type=wysiwyg', 'ks_acf_wysiwyg_disable_auto_embed_after', 20, 3); // re-enable autoembed after value is formatted
-
-function ks_acf_wysiwyg_disable_auto_embed_setting($field) {
-	acf_render_field_setting($field, array(
-		'label'	=> 'Enable Autoembed',
-		'name' => 'enable_autoembed',
-		'type' => 'true_false',
-        'ui' => 1
-	));
-}
-add_action('acf/render_field_settings/type=wysiwyg', 'ks_acf_wysiwyg_disable_auto_embed_setting'); // add setting to enable/disable
-
-function ks_acf_wysiwyg_disable_auto_embed_class($field) {
-    if (!$field['enable_autoembed']) {
-        $field['wrapper']['class'] = explode(' ', $field['wrapper']['class']);
-        $field['wrapper']['class'][] = 'ks-disable-autoembed';
-        $field['wrapper']['class'] = implode(' ', $field['wrapper']['class']);
-    }
-
-    return $field;
-}
-add_filter('acf/prepare_field/type=wysiwyg', 'ks_acf_wysiwyg_disable_auto_embed_class'); // add class to wrapper (so JS knows to disable the wpview TinyMCE plugin)
+add_action('acf/validate_value/type=checkbox', 'ks_acf_multi_min_max_validation', 10, 4); // validate min/max settings for checkbox fields
+add_action('acf/validate_value/type=select', 'ks_acf_multi_min_max_validation', 10, 4); // validate min/max settings for select fields
+add_action('acf/validate_value/type=post_object', 'ks_acf_multi_min_max_validation', 10, 4); // validate min/max settings for post object fields
+add_action('acf/validate_value/type=page_link', 'ks_acf_multi_min_max_validation', 10, 4); // validate min/max settings for page link fields
+add_action('acf/validate_value/type=taxonomy', 'ks_acf_multi_min_max_validation', 10, 4); // validate min/max settings for taxonomy fields
+add_action('acf/validate_value/type=user', 'ks_acf_multi_min_max_validation', 10, 4); // validate min/max settings for user fields
