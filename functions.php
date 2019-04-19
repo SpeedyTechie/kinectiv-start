@@ -240,6 +240,135 @@ add_filter('tiny_mce_before_init', 'ks_tinymce_paste_as_text');
 
 
 /**
+ * Add maximum/minimum selection options to field types with multi-select functionality
+ */
+function ks_acf_multi_min_max_settings($field) {
+    if ($field['type'] == 'checkbox') {
+        // render settings for checkbox fields (always show settings)
+        acf_render_field_setting($field, array(
+            'label'	=> 'Minimum Selection',
+            'name' => 'multi_min',
+            'type' => 'number'
+        ));
+        acf_render_field_setting($field, array(
+            'label'	=> 'Maximum Selection',
+            'name' => 'multi_max',
+            'type' => 'number'
+        ));
+    } elseif ($field['type'] == 'taxonomy') {
+        // render settings for taxonomy fields (hide/show settings based on whether selected appearance allows multiple values)
+        acf_render_field_setting($field, array(
+            'label'	=> 'Minimum Selection',
+            'name' => 'multi_min',
+            'type' => 'number',
+            'conditions' => array(
+                array(
+                    array(
+                        'field' => 'field_type',
+                        'operator' => '==',
+                        'value' => 'checkbox'
+                    )
+                ),
+                array(
+                    array(
+                        'field' => 'field_type',
+                        'operator' => '==',
+                        'value' => 'multi_select'
+                    )
+                ),
+            )
+        ));
+        acf_render_field_setting($field, array(
+            'label'	=> 'Maximum Selection',
+            'name' => 'multi_max',
+            'type' => 'number',
+            'conditions' => array(
+                array(
+                    array(
+                        'field' => 'field_type',
+                        'operator' => '==',
+                        'value' => 'checkbox'
+                    )
+                ),
+                array(
+                    array(
+                        'field' => 'field_type',
+                        'operator' => '==',
+                        'value' => 'multi_select'
+                    )
+                ),
+            )
+        ));
+    } else {
+        // render settings for other field types (hide/show settings based on whether multi-select is enabled)
+        acf_render_field_setting($field, array(
+            'label'	=> 'Minimum Selection',
+            'name' => 'multi_min',
+            'type' => 'number',
+            'conditions' => array(
+                'field' => 'multiple',
+                'operator' => '==',
+                'value' => 1
+            )
+        ));
+        acf_render_field_setting($field, array(
+            'label'	=> 'Maximum Selection',
+            'name' => 'multi_max',
+            'type' => 'number',
+            'conditions' => array(
+                'field' => 'multiple',
+                'operator' => '==',
+                'value' => 1
+            )
+        ));
+    }
+}
+add_action('acf/render_field_settings/type=checkbox', 'ks_acf_multi_min_max_settings'); // add min/max settings to checkbox field type
+add_action('acf/render_field_settings/type=select', 'ks_acf_multi_min_max_settings'); // add min/max settings to select field type
+add_action('acf/render_field_settings/type=post_object', 'ks_acf_multi_min_max_settings'); // add min/max settings to post object field type
+add_action('acf/render_field_settings/type=taxonomy', 'ks_acf_multi_min_max_settings'); // add min/max settings to taxonomy field type
+add_action('acf/render_field_settings/type=user', 'ks_acf_multi_min_max_settings'); // add min/max settings to user field type
+
+function ks_acf_multi_min_max_validation($valid, $value, $field, $input) {
+    if ($valid) {
+        if ($field['multi_min']) {
+            if (!$value) $value = array(); // if value is empty, set it to an empty array so count() returns 0
+            
+            // if value doesn't meet minimum, return validation error message
+            if (count($value) < $field['multi_min']) {
+                $valid = 'Please select a minimum of ' . $field['multi_min'];
+                if ($field['multi_min'] == 1) {
+                    $valid .= ' value.';
+                } else {
+                    $valid .= ' values.';
+                }
+            }
+        }
+        if ($field['multi_max']) {
+            if (!$value) $value = array(); // if value is empty, set it to an empty array so count() returns 0
+            
+            // if value exceeds maximum, return validation error message
+            if (count($value) > $field['multi_max']) {
+                $valid = 'Please select a maximum of ' . $field['multi_max'];
+                if ($field['multi_max'] == 1) {
+                    $valid .= ' value.';
+                } else {
+                    $valid .= ' values.';
+                }
+            }
+        }
+    }
+    
+    return $valid;
+}
+add_action('acf/validate_value/type=checkbox', 'ks_acf_multi_min_max_validation', 10, 4); // validate min/max settings for checkbox field type
+add_action('acf/validate_value/type=select', 'ks_acf_multi_min_max_validation', 10, 4); // validate min/max settings for select field type
+add_action('acf/validate_value/type=post_object', 'ks_acf_multi_min_max_validation', 10, 4); // validate min/max settings for post object field type
+add_action('acf/validate_value/type=taxonomy', 'ks_acf_multi_min_max_validation', 10, 4); // validate min/max settings for taxonomy field type
+add_action('acf/validate_value/type=user', 'ks_acf_multi_min_max_validation', 10, 4); // validate min/max settings for user field type
+
+
+/**
  * Customize ACF WYSIWYG toolbars
  */
 function ks_acf_toolbars($toolbars) {
