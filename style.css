@@ -422,10 +422,13 @@ a {
 a:visited {
 	color: purple;
 }
-a:hover, a:focus, a:active {
+a:hover,
+a:focus,
+a:active {
 	color: midnightblue;
 }
-a:hover, a:active {
+a:hover,
+a:active {
 	outline: 0;
 }
 
