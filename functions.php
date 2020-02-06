@@ -226,6 +226,15 @@ remove_action('wp_head', 'wp_generator'); // remove generator meta tag
 
 
 /**
+ * Dequeue WP Block Editor styles
+ */
+function ks_dequeue_block_styles(){
+    wp_dequeue_style('wp-block-library');
+}
+add_action('wp_enqueue_scripts', 'ks_dequeue_block_styles', 100);
+
+
+/**
  * Disable WordPress emojis
  */
 remove_action('wp_head', 'print_emoji_detection_script', 7);
