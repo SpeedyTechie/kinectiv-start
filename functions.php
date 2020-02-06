@@ -2,8 +2,8 @@
 /**
  * Set up theme defaults and register support for various WordPress features
  */
-if (!function_exists('kinectiv_start_setup')) {
-	function kinectiv_start_setup() {
+if (!function_exists('ks_setup')) {
+	function ks_setup() {
 		// Let WordPress manage the document title
 		add_theme_support('title-tag');
 
@@ -22,16 +22,16 @@ if (!function_exists('kinectiv_start_setup')) {
 		));
 	}
 }
-add_action('after_setup_theme', 'kinectiv_start_setup');
+add_action('after_setup_theme', 'ks_setup');
 
 
 /**
  * Set the content width in pixels
  */
-function kinectiv_start_content_width() {
-	$GLOBALS['content_width'] = apply_filters('kinectiv_start_content_width', 640);
+function ks_content_width() {
+	$GLOBALS['content_width'] = apply_filters('ks_content_width', 640);
 }
-add_action('after_setup_theme', 'kinectiv_start_content_width', 0);
+add_action('after_setup_theme', 'ks_content_width', 0);
 
 
 /**
