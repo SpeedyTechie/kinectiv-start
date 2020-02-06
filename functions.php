@@ -58,7 +58,27 @@ add_action('admin_enqueue_scripts', 'ks_admin_scripts');
  * Add ACF options page
  */
 if (function_exists('acf_add_options_page')) {
-    acf_add_options_page('Theme Options');
+    $options_page = acf_add_options_page(array(
+		'page_title' 	=> 'Site Options',
+		'capability'	=> 'edit_theme_options'
+	));
+    
+    acf_add_options_sub_page(array(
+        'page_title' => 'General Info',
+        'parent_slug' 	=> $options_page['menu_slug']
+    ));
+    acf_add_options_sub_page(array(
+        'page_title' => 'Header & Footer',
+        'parent_slug' 	=> $options_page['menu_slug']
+    ));
+    acf_add_options_sub_page(array(
+        'page_title' => '404 Page',
+        'parent_slug' 	=> $options_page['menu_slug']
+    ));
+    acf_add_options_sub_page(array(
+        'page_title' => 'Site Configuration',
+        'parent_slug' 	=> $options_page['menu_slug']
+    ));
 }
 
 

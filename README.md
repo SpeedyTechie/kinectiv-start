@@ -20,7 +20,7 @@ A WordPress starter theme for Kinectiv websites
 * Add all custom JS functions to `js/src/functions.js`. Add any 3rd party JS files to `js/src`. These files will be concatenated and minified (along with `functions.js`) and saved as `js/script.min.js`.
 
 #### Customization
-* If your theme does not require an ACF Theme Options page, remove the `Add ACF options page` section from `functions.php`.
+* If your theme does not require an ACF Options page, remove the `Add ACF options page` section from `functions.php`.
 * If your theme requires comments, remove the `Disable comments` section from `functions.php`.
 * If your theme requires search, remove the `Disable search` section from `functions.php`.
 * If your theme will use Posts, remove the `Hide Posts from admin` section from `functions.php`.
