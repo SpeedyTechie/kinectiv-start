@@ -322,7 +322,7 @@ address {
 }
 pre {
 	background: #eee;
-	font-family: "Courier 10 Pitch", Courier, monospace;
+	font-family: 'Courier 10 Pitch', Courier, monospace;
 	font-size: 15px;
 	line-height: 1.6;
 	margin-bottom: 1.6em;
@@ -331,7 +331,7 @@ pre {
 	padding: 1.6em;
 }
 code, kbd, tt, var {
-	font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+	font-family: Monaco, Consolas, 'Andale Mono', 'DejaVu Sans Mono', monospace;
 	font-size: 15px;
 }
 abbr, acronym {
