@@ -554,7 +554,8 @@ object {
 .gform_wrapper input.gform_hidden,
 .gform_wrapper input[type=hidden],
 .gform_wrapper .gf_invisible,
-.gform_wrapper .gfield_visibility_hidden {
+.gform_wrapper .gfield_visibility_hidden,
+.gform_wrapper .gform_validation_container {
     display: none;
 }
 
