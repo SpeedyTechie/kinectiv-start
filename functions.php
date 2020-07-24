@@ -170,6 +170,7 @@ function ks_disable_search($query, $error = true) {
 add_action('parse_query', 'ks_disable_search');
 add_filter('get_search_form', '__return_null');
 
+
 /**
  * Hide Posts from admin
  */
