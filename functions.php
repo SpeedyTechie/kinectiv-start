@@ -172,6 +172,42 @@ add_filter('get_search_form', '__return_null');
 
 
 /**
+ * Customize order of admin menu items
+ */
+function ks_admin_menu_order($menu_order) {
+    // list of items keyed by the item they should be located after
+    $relocate_after = array(
+        'separator1' => array('edit.php?post_type=page', 'edit.php'),
+        'separator2' => array('acf-options-general-info', 'separator-last')
+    );
+    
+    // create a list of all menu items that will be relocated
+    $to_relocate = array();
+    foreach ($relocate_after as $set) {
+        $to_relocate = array_merge($to_relocate, $set);
+    }
+    
+    // build new array and with items relocated
+    $custom_order = array();
+    foreach ($menu_order as $item) {
+        // only process this item if it will not be relocated
+        if (!in_array($item, $to_relocate)) {
+            $custom_order[] = $item; // add this item to the array
+            
+            // if there are items to be located after this item, add them to the array also
+            if (array_key_exists($item, $relocate_after)) {
+                $custom_order = array_merge($custom_order, $relocate_after[$item]);
+            }
+        }
+    }
+    
+    return $custom_order;
+}
+add_filter('custom_menu_order', '__return_true'); // enable menu_order filter
+add_filter('menu_order', 'ks_admin_menu_order'); // filter menu order
+
+
+/**
  * Hide Posts from admin
  */
 function ks_disable_posts_admin_menu() {
