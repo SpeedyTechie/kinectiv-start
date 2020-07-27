@@ -177,7 +177,7 @@ add_filter('get_search_form', '__return_null');
 function ks_admin_menu_order($menu_order) {
     // list of items keyed by the item they should be located after
     $relocate_after = array(
-        'separator1' => array('edit.php?post_type=page', 'edit.php'),
+        'separator1' => array('edit.php?post_type=page'),
         'separator2' => array('acf-options-general-info', 'separator-last')
     );
     
