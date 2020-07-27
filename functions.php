@@ -511,6 +511,7 @@ add_action('acf/render_field_settings/type=post_object', 'ks_acf_multi_min_max_s
 add_action('acf/render_field_settings/type=page_link', 'ks_acf_multi_min_max_settings'); // add min/max settings to page link fields
 add_action('acf/render_field_settings/type=taxonomy', 'ks_acf_multi_min_max_settings'); // add min/max settings to taxonomy fields
 add_action('acf/render_field_settings/type=user', 'ks_acf_multi_min_max_settings'); // add min/max settings to user fields
+add_action('acf/render_field_settings/type=gf_select', 'ks_acf_multi_min_max_settings'); // add min/max settings to Gravity Form fields
 
 function ks_acf_multi_min_max_validation($valid, $value, $field, $input) {
     if ($valid) {
@@ -550,3 +551,13 @@ add_action('acf/validate_value/type=post_object', 'ks_acf_multi_min_max_validati
 add_action('acf/validate_value/type=page_link', 'ks_acf_multi_min_max_validation', 10, 4); // validate min/max settings for page link fields
 add_action('acf/validate_value/type=taxonomy', 'ks_acf_multi_min_max_validation', 10, 4); // validate min/max settings for taxonomy fields
 add_action('acf/validate_value/type=user', 'ks_acf_multi_min_max_validation', 10, 4); // validate min/max settings for user fields
+add_action('acf/validate_value/type=gf_select', 'ks_acf_multi_min_max_validation', 10, 4); // validate min/max settings for Gravity Form fields
+
+
+/**
+ * Add custom ACF field types
+ */
+function ks_include_custom_acf_field_types() {
+    include_once(get_template_directory() . '/includes/acf-custom/fields/acf-gf-select.php'); // add Gravity Form field type
+}
+add_action('acf/include_field_types', 'ks_include_custom_acf_field_types');
