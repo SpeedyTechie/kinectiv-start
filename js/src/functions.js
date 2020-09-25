@@ -9,7 +9,7 @@ var enhanceMouseFocusNewElements = $();
 function enhanceMouseFocusUpdate() {
     if (enhanceMouseFocusEnabled) {
         // add any new focusable elements
-        enhanceMouseFocusNewElements = $('button, input[type="submit"], input[type="button"], [tabindex]:not(input, textarea)').not(enhanceMouseFocusElements);
+        enhanceMouseFocusNewElements = $('button, input[type="submit"], input[type="button"], [tabindex]:not(input, textarea), a').not(enhanceMouseFocusElements);
         enhanceMouseFocusElements = enhanceMouseFocusElements.add(enhanceMouseFocusNewElements);
         
         // if an element gets focus due to a mouse click, prevent it from keeping focus
