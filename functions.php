@@ -421,6 +421,7 @@ add_filter('acf/fields/post_object/query', 'ks_acf_template_filter_query', 10, 3
 add_filter('acf/fields/page_link/query', 'ks_acf_template_filter_query', 10, 3); // update query for page link fields to include template filter
 add_filter('acf/fields/relationship/query', 'ks_acf_template_filter_query', 10, 3); // update query for relationship fields to include template filter
 
+
 /**
  * Add maximum/minimum selection options to field types with multi-select functionality
  */
