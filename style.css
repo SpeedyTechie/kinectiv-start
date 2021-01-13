@@ -39,6 +39,12 @@ body {
 	margin: 0;
 }
 /**
+ * Render the `main` element consistently in IE.
+ */
+main {
+	display: block;
+}
+/**
  * Correct the font size and margin on `h1` elements within `section` and
  * `article` contexts in Chrome, Firefox, and Safari.
  */
@@ -353,7 +359,7 @@ html {
 *,
 *:before,
 *:after {
-	box-sizing: inherit; /* Inherit box-sizing to make it easier to change the property for components that leverage other behavior; see https://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/ */
+	box-sizing: inherit;
 }
 body {
 	background: #eee;
@@ -379,17 +385,22 @@ li > ol {
 	margin-left: 1.5em;
 }
 dt {
-	font-weight: bold;
+	font-weight: 700;
 }
 dd {
 	margin: 0 1.5em 1.5em;
 }
+embed,
+iframe,
+object {
+	max-width: 100%;
+}
 img {
-	height: auto; /* Make sure images are scaled correctly. */
-	max-width: 100%; /* Adhere to container width. */
+	height: auto;
+	max-width: 100%;
 }
 figure {
-	margin: 1em 0; /* Extra wide images within figure tags don't overflow the content area. */
+	margin: 1em 0;
 }
 table {
 	margin: 0 0 1.5em;
@@ -433,7 +444,6 @@ a:active {
 /*--------------------------------------------------------------
 # Accessibility
 --------------------------------------------------------------*/
-/* Text meant only for screen readers. */
 .screen-reader-text {
 	border: 0;
 	clip: rect(1px, 1px, 1px, 1px);
@@ -444,17 +454,7 @@ a:active {
 	padding: 0;
 	position: absolute !important;
 	width: 1px;
-	word-wrap: normal !important; /* Many screen reader and browser combinations announce broken words as they would appear visually. */
-}
-
-/*--------------------------------------------------------------
-# Media
---------------------------------------------------------------*/
-/* Make sure embeds and iframes fit their containers. */
-embed,
-iframe,
-object {
-	max-width: 100%;
+	word-wrap: normal !important;
 }
 
 /*--------------------------------------------------------------
