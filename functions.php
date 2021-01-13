@@ -14,6 +14,8 @@ if (!function_exists('ks_setup')) {
 			'comment-list',
 			'gallery',
 			'caption',
+            'style',
+            'script'
 		));
 	}
 }
