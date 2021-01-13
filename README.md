@@ -7,7 +7,6 @@ A WordPress starter theme for Kinectiv websites
 #### Initial Configuration
 * Update `Theme Name: Kinectiv Start` at the top of `style.css` to include the name for your theme.
 * Find all occurences of `kinectiv-start-` (handle prefixes) and `kinectiv_start_` (function name prefixes) in `functions.php` and update them to match the name of your theme.
-* Update `register_nav_menus()` in `functions.php` to register any nav menus you will need for your theme. If no nav menus are needed, remove the function call.
 
 #### Gulp
 * Run `npm install` to install all needed packages.
