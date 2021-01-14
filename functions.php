@@ -553,6 +553,40 @@ add_action('acf/validate_value/type=gf_select', 'ks_acf_multi_min_max_validation
 
 
 /**
+ * Add ACF WYSIWYG height setting
+ */
+function ks_acf_wysiwyg_field_height_setting($field) {
+	acf_render_field_setting($field, array(
+		'label'	=> 'Height',
+		'name' => 'editor_height',
+		'type' => 'number',
+        'placeholder' => '300',
+        'append' => 'px'
+	));
+}
+add_action('acf/render_field_settings/type=wysiwyg', 'ks_acf_wysiwyg_field_height_setting'); // add setting to adjust field height
+
+function ks_acf_wysiwyg_field_height_script($field) {
+    if ($field['editor_height']) { ?>
+        <style type="text/css">
+            textarea[name="<?php echo $field['name']; ?>"] {
+                height: <?php echo $field['editor_height']; ?>px !important;
+            }
+        </style>
+        <script type="text/javascript">
+            jQuery(function() {
+                jQuery('textarea[name="<?php echo $field['name']; ?>"]').css('height', '<?php echo $field['editor_height']; ?>px');
+                jQuery('iframe#' + jQuery('textarea[name="<?php echo $field['name']; ?>"]').attr('id') + '_ifr').css('height', '<?php echo $field['editor_height']; ?>px');
+            });
+        </script>
+    <?php }
+
+    return $field;
+}
+add_filter('acf/prepare_field/type=wysiwyg', 'ks_acf_wysiwyg_field_height_script'); // add js to adjust field height
+
+
+/**
  * Add custom ACF field types
  */
 function ks_include_custom_acf_field_types() {
