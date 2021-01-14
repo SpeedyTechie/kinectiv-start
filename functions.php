@@ -46,6 +46,8 @@ function kinectiv_start_scripts() {
 add_action('wp_enqueue_scripts', 'kinectiv_start_scripts');
 
 function ks_admin_scripts() {
+    wp_enqueue_style('ks-admin-css', get_stylesheet_directory_uri() . '/css/wp-admin.css', array(), '1.0.0');
+    
 	wp_enqueue_script('ks-admin-js', get_template_directory_uri() . '/js/wp-admin.js', array(), '1.0.0', true);
 }
 add_action('admin_enqueue_scripts', 'ks_admin_scripts');
@@ -80,12 +82,19 @@ if (function_exists('acf_add_options_page')) {
 
 
 /**
- * Remove Site Icon control from Theme Customization
+ * Remove unnecessary panels/controls from WP Customizer
  */
 function ks_customize_register($wp_customize) {
-    $wp_customize->remove_control('site_icon');
+    $wp_customize->remove_control('site_icon'); // remove site icon control
+    $wp_customize->remove_panel('nav_menus'); // remove menus panel
 }
-add_action('customize_register', 'ks_customize_register', 20);  
+add_action('customize_register', 'ks_customize_register', 20);
+
+
+/**
+ * Disable WP Theme Editor
+ */	
+define('DISALLOW_FILE_EDIT', true);
 
 
 /**
