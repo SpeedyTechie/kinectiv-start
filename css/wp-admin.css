@@ -4,3 +4,14 @@
 .acf-input .acf-editor-wrap iframe {
     min-height: 56px;
 }
+
+/*--------------------------------------------------------------
+# ACF Character Counter
+--------------------------------------------------------------*/
+.ks-char-count {
+    margin: 0;
+    color: #666;
+    font-size: 13px;
+    font-style: italic;
+    text-align: right;
+}
