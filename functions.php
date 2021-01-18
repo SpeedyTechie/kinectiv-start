@@ -266,6 +266,7 @@ remove_action('wp_head', 'rsd_link'); // remove RSD link used by blog clients
 remove_action('wp_head', 'wlwmanifest_link'); // remove Windows Live Writer client link
 remove_action('wp_head', 'wp_shortlink_wp_head'); // remove shortlink
 remove_action('wp_head', 'wp_generator'); // remove generator meta tag
+remove_action('wp_head', 'rest_output_link_wp_head'); // remove REST links
 
 
 /**
