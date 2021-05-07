@@ -316,9 +316,23 @@ add_filter('tiny_mce_before_init', 'ks_tinymce_paste_as_text');
  * Customize ACF WYSIWYG toolbars
  */
 function ks_acf_toolbars($toolbars) {
+    // Add Standard toolbar
+    $toolbars['Standard'] = array();
+    $toolbars['Standard'][1] = array('formatselect', 'bold', 'italic', 'underline', 'strikethrough', 'blockquote', 'bullist', 'numlist', 'link', 'hr', 'undo', 'redo', 'wp_adv');
+    $toolbars['Standard'][2] = array('alignleft', 'aligncenter', 'alignright', 'removeformat', 'fullscreen');
+    
+    // Add Standard (No Headings) toolbar
+    $toolbars['Standard (No Headings)'] = array();
+    $toolbars['Standard (No Headings)'][1] = array('bold', 'italic', 'underline', 'strikethrough', 'blockquote', 'bullist', 'numlist', 'link', 'hr', 'undo', 'redo', 'wp_adv');
+    $toolbars['Standard (No Headings)'][2] = array('alignleft', 'aligncenter', 'alignright', 'removeformat', 'fullscreen');
+    
     // Add Minimal toolbar
 	$toolbars['Minimal'] = array();
 	$toolbars['Minimal'][1] = array('bold' , 'italic', 'link');
+    
+    // Add Minimal (No Links) toolbar
+	$toolbars['Minimal (No Links)'] = array();
+	$toolbars['Minimal (No Links)'][1] = array('bold' , 'italic');
     
 	return $toolbars;
 }
@@ -328,8 +342,14 @@ function ks_acf_wysiwyg_strip_tags($value, $post_id, $field) {
     if ($field['enable_strip_tags']) {
         if ($field['toolbar'] == 'basic') {
             $value = strip_tags($value, '<p><strong><em><span><a><br><blockquote><del><ul><ol><li>');
+        } elseif ($field['toolbar'] == 'standard') {
+            $value = strip_tags($value, '<p><h2><h3><h4><h5><strong><em><span><del><blockquote><ul><ol><li><a><hr><br>');
+        } elseif ($field['toolbar'] == 'standard_no_headings') {
+            $value = strip_tags($value, '<p><strong><em><span><del><blockquote><ul><ol><li><a><hr><br>');
         } elseif ($field['toolbar'] == 'minimal') {
             $value = strip_tags($value, '<p><strong><em><a><br>');
+        } elseif ($field['toolbar'] == 'minimal_no_links') {
+            $value = strip_tags($value, '<p><strong><em><br>');
         }
     }
     
