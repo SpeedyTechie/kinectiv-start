@@ -108,9 +108,62 @@ add_action('admin_head', 'ks_favicon');
 
 
 /**
- * Gravity Forms hide "Add Form" WYSIWYG button
+ * Gravity Forms - hide "Add Form" WYSIWYG button
  */
 add_filter('gform_display_add_form_button', '__return_false');
+
+
+/**
+ * Gravity Forms - customize back-end confirmation WYSIWYG editor
+ */
+function ks_gform_confirmation_wp_editor_settings($settings, $editor_id) {
+    if ($editor_id == 'form_confirmation_message') {
+        $settings['quicktags'] = false; // disable "text" tab
+    }
+    
+    return $settings;
+}
+add_filter('wp_editor_settings', 'ks_gform_confirmation_wp_editor_settings', 10, 2); // customize wp_editor settings
+
+function ks_gform_confirmation_acf_toolbar_name() {
+    return 'Standard'; // set which ACF toolbar to use for the confirmation WYSIWYG editor
+}
+
+function ks_gform_confirmation_mce_buttons($mce_buttons, $editor_id) {
+    if ($editor_id == 'form_confirmation_message') {
+        $mce_buttons = ks_tinymce_toolbar_row_from_acf(ks_gform_confirmation_acf_toolbar_name(), 1);
+    }
+    
+    return $mce_buttons;
+}
+add_filter('mce_buttons', 'ks_gform_confirmation_mce_buttons', 10, 2); // customize tinyMCE buttons (row 1)
+
+function ks_gform_confirmation_mce_buttons_2($mce_buttons, $editor_id) {
+    if ($editor_id == 'form_confirmation_message') {
+        $mce_buttons = ks_tinymce_toolbar_row_from_acf(ks_gform_confirmation_acf_toolbar_name(), 2);
+    }
+    
+    return $mce_buttons;
+}
+add_filter('mce_buttons_2', 'ks_gform_confirmation_mce_buttons_2', 10, 2); // customize tinyMCE buttons (row 2)
+
+function ks_gform_confirmation_mce_buttons_3($mce_buttons, $editor_id) {
+    if ($editor_id == 'form_confirmation_message') {
+        $mce_buttons = ks_tinymce_toolbar_row_from_acf(ks_gform_confirmation_acf_toolbar_name(), 3);
+    }
+    
+    return $mce_buttons;
+}
+add_filter('mce_buttons_3', 'ks_gform_confirmation_mce_buttons_3', 10, 2); // customize tinyMCE buttons (row 3)
+
+function ks_gform_confirmation_mce_buttons_4($mce_buttons, $editor_id) {
+    if ($editor_id == 'form_confirmation_message') {
+        $mce_buttons = ks_tinymce_toolbar_row_from_acf(ks_gform_confirmation_acf_toolbar_name(), 4);
+    }
+    
+    return $mce_buttons;
+}
+add_filter('mce_buttons_4', 'ks_gform_confirmation_mce_buttons_4', 10, 2); // customize tinyMCE buttons (row 4)
 
 
 /**
@@ -318,13 +371,11 @@ add_filter('tiny_mce_before_init', 'ks_tinymce_paste_as_text');
 function ks_acf_toolbars($toolbars) {
     // Add Standard toolbar
     $toolbars['Standard'] = array();
-    $toolbars['Standard'][1] = array('formatselect', 'bold', 'italic', 'underline', 'strikethrough', 'blockquote', 'bullist', 'numlist', 'link', 'hr', 'undo', 'redo', 'wp_adv');
-    $toolbars['Standard'][2] = array('alignleft', 'aligncenter', 'alignright', 'removeformat', 'fullscreen');
+    $toolbars['Standard'][1] = array('formatselect', 'bold', 'italic', 'underline', 'strikethrough', 'blockquote', 'bullist', 'numlist', 'link', 'hr', 'undo', 'redo', 'removeformat', 'fullscreen');
     
     // Add Standard (No Headings) toolbar
     $toolbars['Standard (No Headings)'] = array();
-    $toolbars['Standard (No Headings)'][1] = array('bold', 'italic', 'underline', 'strikethrough', 'blockquote', 'bullist', 'numlist', 'link', 'hr', 'undo', 'redo', 'wp_adv');
-    $toolbars['Standard (No Headings)'][2] = array('alignleft', 'aligncenter', 'alignright', 'removeformat', 'fullscreen');
+    $toolbars['Standard (No Headings)'][1] = array('bold', 'italic', 'underline', 'strikethrough', 'blockquote', 'bullist', 'numlist', 'link', 'hr', 'undo', 'redo', 'removeformat', 'fullscreen');
     
     // Add Minimal toolbar
 	$toolbars['Minimal'] = array();
@@ -343,7 +394,7 @@ function ks_acf_wysiwyg_strip_tags($value, $post_id, $field) {
         if ($field['toolbar'] == 'basic') {
             $value = strip_tags($value, '<p><strong><em><span><a><br><blockquote><del><ul><ol><li>');
         } elseif ($field['toolbar'] == 'standard') {
-            $value = strip_tags($value, '<p><h2><h3><h4><h5><strong><em><span><del><blockquote><ul><ol><li><a><hr><br>');
+            $value = strip_tags($value, '<p><h2><h3><h4><h5><h6><strong><em><span><del><blockquote><ul><ol><li><a><hr><br>');
         } elseif ($field['toolbar'] == 'standard_no_headings') {
             $value = strip_tags($value, '<p><strong><em><span><del><blockquote><ul><ol><li><a><hr><br>');
         } elseif ($field['toolbar'] == 'minimal') {
@@ -367,6 +418,31 @@ function ks_acf_wysiwyg_strip_tags_setting($field) {
 	));
 }
 add_action('acf/render_field_settings/type=wysiwyg', 'ks_acf_wysiwyg_strip_tags_setting'); // add setting to enable/disable
+
+function ks_tinymce_toolbar_row_from_acf($acf_name, $row) {
+    // allow pulling the ACF toolbars elsewhere
+    if (class_exists('acf_field_wysiwyg')) {
+        $acf_toolbars = (new acf_field_wysiwyg)->get_toolbars();
+        $toolbar_row = $acf_toolbars[$acf_name][$row];
+        
+        if (isset($toolbar_row)) {
+            return $toolbar_row;
+        }
+    }
+    
+    return array();
+}
+
+
+/**
+ * Limit WYSIWYG format optons to H2-H6 and Text
+ */
+function ks_wysiwyg_block_formats($args) {
+    $args['block_formats'] = 'Text=p;Heading 2=h2;Heading 3=h3;Heading 4=h4;Heading 5=h5;Heading 6=h6';
+    
+    return $args;
+}
+add_filter('tiny_mce_before_init', 'ks_wysiwyg_block_formats');
 
 
 /**
