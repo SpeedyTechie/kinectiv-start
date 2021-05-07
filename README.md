@@ -24,7 +24,7 @@ A WordPress starter theme for Kinectiv websites
 * If your theme requires search, remove the `Disable search` section from `functions.php`.
 * If your theme will use Posts, remove the `Hide Posts from admin` section from `functions.php`.
 * If your theme requires post archive pages, remove the `Disable archive pages for Posts` section from `functions.php` (or customize to fit your needs).
-* If your theme will use the Category or Tag taxonomies for Posts, remove the the `Unregister default taxonomies for Posts` section (or the relevant lines) from `functions.php`.
+* If your theme will use the Category or Tag taxonomies for Posts, remove the `Unregister default taxonomies for Posts` section (or the relevant lines) from `functions.php`.
 * If you'd like to use the default order for the admin menu items, remove the `Customize order of admin menu items` section from `functions.php`.
 * Replace `images/favicon.ico` with the site icon for your theme.
 * Update the default `color`, `font-family`, and any other properties as needed at the beginning of the `Typography` section in `style.css`.
