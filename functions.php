@@ -167,6 +167,18 @@ add_filter('mce_buttons_4', 'ks_gform_confirmation_mce_buttons_4', 10, 2); // cu
 
 
 /**
+ * Gravity Forms - customize confirmation
+ */
+function ks_gform_pre_confirmation_save($confirmation, $form) {
+    $confirmation['disableAutoformat'] = true; // disable nl2br
+    $confirmation['message'] = wpautop($confirmation['message']); // auto add <p> tags
+    
+    return $confirmation;
+}
+add_filter('gform_pre_confirmation_save', 'ks_gform_pre_confirmation_save', 10, 2);
+
+
+/**
  * Disable comments
  */
 function ks_disable_comments_post_types_support() {
