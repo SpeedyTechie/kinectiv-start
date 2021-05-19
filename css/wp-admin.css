@@ -17,8 +17,13 @@
 }
 
 /*--------------------------------------------------------------
-# Gravity Forms - Confirmation Editor
+# Gravity Forms
 --------------------------------------------------------------*/
+/* Form Settings */
+#tab_settings #gform_setting_markupVersion {
+    display: none !important;
+}
+/* Confirmation Settings */
 #tab_confirmation #gform_setting_disableAutoformat,
 #tab_confirmation #wp-_gform_setting_message-media-buttons {
     display: none !important;
