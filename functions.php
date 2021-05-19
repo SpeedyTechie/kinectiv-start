@@ -117,7 +117,9 @@ add_filter('gform_display_add_form_button', '__return_false');
  * Gravity Forms - customize back-end confirmation WYSIWYG editor
  */
 function ks_gform_confirmation_wp_editor_settings($settings, $editor_id) {
-    if ($editor_id == 'form_confirmation_message') {
+    $gf_subview = GFSettings::get_subview();
+    
+    if ($editor_id == '_gform_setting_message' && $gf_subview == 'confirmation') {
         $settings['quicktags'] = false; // disable "text" tab
     }
     
@@ -130,7 +132,9 @@ function ks_gform_confirmation_acf_toolbar_name() {
 }
 
 function ks_gform_confirmation_mce_buttons($mce_buttons, $editor_id) {
-    if ($editor_id == 'form_confirmation_message') {
+    $gf_subview = GFSettings::get_subview();
+    
+    if ($editor_id == '_gform_setting_message' && $gf_subview == 'confirmation') {
         $mce_buttons = ks_tinymce_toolbar_row_from_acf(ks_gform_confirmation_acf_toolbar_name(), 1);
     }
     
@@ -139,7 +143,9 @@ function ks_gform_confirmation_mce_buttons($mce_buttons, $editor_id) {
 add_filter('mce_buttons', 'ks_gform_confirmation_mce_buttons', 10, 2); // customize tinyMCE buttons (row 1)
 
 function ks_gform_confirmation_mce_buttons_2($mce_buttons, $editor_id) {
-    if ($editor_id == 'form_confirmation_message') {
+    $gf_subview = GFSettings::get_subview();
+    
+    if ($editor_id == '_gform_setting_message' && $gf_subview == 'confirmation') {
         $mce_buttons = ks_tinymce_toolbar_row_from_acf(ks_gform_confirmation_acf_toolbar_name(), 2);
     }
     
@@ -148,7 +154,9 @@ function ks_gform_confirmation_mce_buttons_2($mce_buttons, $editor_id) {
 add_filter('mce_buttons_2', 'ks_gform_confirmation_mce_buttons_2', 10, 2); // customize tinyMCE buttons (row 2)
 
 function ks_gform_confirmation_mce_buttons_3($mce_buttons, $editor_id) {
-    if ($editor_id == 'form_confirmation_message') {
+    $gf_subview = GFSettings::get_subview();
+    
+    if ($editor_id == '_gform_setting_message' && $gf_subview == 'confirmation') {
         $mce_buttons = ks_tinymce_toolbar_row_from_acf(ks_gform_confirmation_acf_toolbar_name(), 3);
     }
     
@@ -157,7 +165,9 @@ function ks_gform_confirmation_mce_buttons_3($mce_buttons, $editor_id) {
 add_filter('mce_buttons_3', 'ks_gform_confirmation_mce_buttons_3', 10, 2); // customize tinyMCE buttons (row 3)
 
 function ks_gform_confirmation_mce_buttons_4($mce_buttons, $editor_id) {
-    if ($editor_id == 'form_confirmation_message') {
+    $gf_subview = GFSettings::get_subview();
+    
+    if ($editor_id == '_gform_setting_message' && $gf_subview == 'confirmation') {
         $mce_buttons = ks_tinymce_toolbar_row_from_acf(ks_gform_confirmation_acf_toolbar_name(), 4);
     }
     

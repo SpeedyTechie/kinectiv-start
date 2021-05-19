@@ -19,8 +19,7 @@
 /*--------------------------------------------------------------
 # Gravity Forms - Confirmation Editor
 --------------------------------------------------------------*/
-#confirmation-editor #form_disable_autoformatting,
-#confirmation-editor label[for="form_disable_autoformatting"],
-#confirmation-editor #wp-form_confirmation_message-media-buttons {
+#tab_confirmation #gform_setting_disableAutoformat,
+#tab_confirmation #wp-_gform_setting_message-media-buttons {
     display: none !important;
 }
