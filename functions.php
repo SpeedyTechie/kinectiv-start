@@ -207,6 +207,12 @@ add_filter('gform_pre_confirmation_save', 'ks_gform_pre_confirmation_save', 10, 
 
 
 /**
+ * Gravity Forms - disable theme CSS
+ */
+add_filter('gform_disable_form_theme_css', '__return_true');
+
+
+/**
  * Disable comments
  */
 function ks_disable_comments_post_types_support() {
