@@ -12,6 +12,8 @@
 	<link rel="profile" href="http://gmpg.org/xfn/11">
 
 	<?php wp_head(); ?>
+    
+    <script> </script><!-- to prevent Chrome bug https://bugs.chromium.org/p/chromium/issues/detail?id=332189 -->
 </head>
 
 <body <?php body_class(); ?>>
