@@ -82,6 +82,24 @@ if (function_exists('acf_add_options_page')) {
 
 
 /**
+ * Purge Kinsta Cache when ACF options page is updated
+ */
+function ks_save_options_page($post_id) {
+    // check if this is an options page
+    if ($post_id == 'options') {
+        // check if this site is hosted on a Kinsta production environment with caching
+        if (wp_get_environment_type() == 'production' && class_exists('Kinsta\Cache')) {
+            wp_remote_get('https://localhost/kinsta-clear-cache-all', [
+               'sslverify' => false, 
+               'timeout'   => 5
+            ]); // purge the cache
+        }
+    }
+}
+add_action('acf/save_post', 'ks_save_options_page');
+
+
+/**
  * Remove unnecessary panels/controls from WP Customizer
  */
 function ks_customize_register($wp_customize) {
