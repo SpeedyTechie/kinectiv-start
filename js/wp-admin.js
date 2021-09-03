@@ -1,6 +1,6 @@
 (function($) {
 
-    /* Disable the wpview TinyMCE plugin for ACF WYSIWYG fields (unless the enabled in settings) */
+    /* Disable the wpview TinyMCE plugin for ACF WYSIWYG fields (unless enabled in settings) */
 
     acf.addFilter('wysiwyg_tinymce_settings', function(mceInit, id, field){
         if (field.$el.hasClass('ks-disable-autoembed')) {
