@@ -49,6 +49,10 @@ function ks_admin_scripts() {
     wp_enqueue_style('ks-admin-css', get_stylesheet_directory_uri() . '/css/wp-admin.css', array(), '1.0.0');
     
 	wp_enqueue_script('ks-admin-js', get_template_directory_uri() . '/js/wp-admin.js', array(), '1.0.0', true);
+
+    wp_localize_script('ks-admin-js', 'wpVars', array(
+        'wysiwygConfigs' => ks_wysiwyg_configs()
+    ));
 }
 add_action('admin_enqueue_scripts', 'ks_admin_scripts');
 
@@ -145,53 +149,16 @@ function ks_gform_confirmation_wp_editor_settings($settings, $editor_id) {
 }
 add_filter('wp_editor_settings', 'ks_gform_confirmation_wp_editor_settings', 10, 2); // customize wp_editor settings
 
-function ks_gform_confirmation_acf_toolbar_name() {
-    return 'Standard'; // set which ACF toolbar to use for the confirmation WYSIWYG editor
-}
-
-function ks_gform_confirmation_mce_buttons($mce_buttons, $editor_id) {
+function ks_gform_confirmation_tiny_mce_before_init($mce_init, $editor_id) {
     $gf_subview = GFSettings::get_subview();
-    
-    if ($editor_id == '_gform_setting_message' && $gf_subview == 'confirmation') {
-        $mce_buttons = ks_tinymce_toolbar_row_from_acf(ks_gform_confirmation_acf_toolbar_name(), 1);
-    }
-    
-    return $mce_buttons;
-}
-add_filter('mce_buttons', 'ks_gform_confirmation_mce_buttons', 10, 2); // customize tinyMCE buttons (row 1)
 
-function ks_gform_confirmation_mce_buttons_2($mce_buttons, $editor_id) {
-    $gf_subview = GFSettings::get_subview();
-    
     if ($editor_id == '_gform_setting_message' && $gf_subview == 'confirmation') {
-        $mce_buttons = ks_tinymce_toolbar_row_from_acf(ks_gform_confirmation_acf_toolbar_name(), 2);
+        $mce_init = ks_configure_tinymce($mce_init, 'Standard');
     }
-    
-    return $mce_buttons;
-}
-add_filter('mce_buttons_2', 'ks_gform_confirmation_mce_buttons_2', 10, 2); // customize tinyMCE buttons (row 2)
 
-function ks_gform_confirmation_mce_buttons_3($mce_buttons, $editor_id) {
-    $gf_subview = GFSettings::get_subview();
-    
-    if ($editor_id == '_gform_setting_message' && $gf_subview == 'confirmation') {
-        $mce_buttons = ks_tinymce_toolbar_row_from_acf(ks_gform_confirmation_acf_toolbar_name(), 3);
-    }
-    
-    return $mce_buttons;
+    return $mce_init;
 }
-add_filter('mce_buttons_3', 'ks_gform_confirmation_mce_buttons_3', 10, 2); // customize tinyMCE buttons (row 3)
-
-function ks_gform_confirmation_mce_buttons_4($mce_buttons, $editor_id) {
-    $gf_subview = GFSettings::get_subview();
-    
-    if ($editor_id == '_gform_setting_message' && $gf_subview == 'confirmation') {
-        $mce_buttons = ks_tinymce_toolbar_row_from_acf(ks_gform_confirmation_acf_toolbar_name(), 4);
-    }
-    
-    return $mce_buttons;
-}
-add_filter('mce_buttons_4', 'ks_gform_confirmation_mce_buttons_4', 10, 2); // customize tinyMCE buttons (row 4)
+add_filter('tiny_mce_before_init', 'ks_gform_confirmation_tiny_mce_before_init', 10, 2); // customize toolbar
 
 
 /**
@@ -401,94 +368,256 @@ add_filter('tiny_mce_plugins', 'ks_tinymce_disable_emojis'); // disable wpemoji 
 
 
 /**
- * Enable TinyMCE paste as text by default
+ * Custom WYSIWYG configurations
  */
-function ks_tinymce_paste_as_text($init) {
-    $init['paste_as_text'] = true;
+function ks_wysiwyg_configs() {
+    $configs = array();
+
+    // add config: Full
+    $configs['Full'] = array(
+        'toolbars' => array(
+            1 => array('formatselect', 'bold', 'italic', 'bullist', 'numlist', 'blockquote', 'alignleft', 'aligncenter', 'alignright', 'link', 'wp_more', 'spellchecker', 'fullscreen', 'wp_adv'),
+			2 => array('strikethrough', 'hr', 'forecolor', 'pastetext', 'removeformat', 'charmap', 'outdent', 'indent', 'undo', 'redo', 'wp_help')
+        )
+    );
+
+    // add config: Standard
+    $configs['Standard'] = array(
+        'toolbars' => array(
+            1 => array('formatselect', 'bold', 'italic', 'underline', 'strikethrough', 'blockquote', 'bullist', 'numlist', 'link', 'hr', 'undo', 'redo', 'removeformat', 'fullscreen')
+        ),
+        'formats' => array(
+            'p' => 'Text',
+            'h2' => 'Heading 2',
+            'h3' => 'Heading 3',
+            'h4' => 'Heading 4',
+            'h5' => 'Heading 5',
+            'h6' => 'Heading 6'
+        ),
+        'elements' => array(
+            'p' => array(),
+            'h2' => array(),
+            'h3' => array(),
+            'h4' => array(),
+            'h5' => array(),
+            'h6' => array(),
+            'strong' => array(
+                'synonyms' => array('b')
+            ),
+            'em' => array(
+                'synonyms' => array('i')
+            ),
+            'span' => array(
+                'styles' => array('text-decoration')
+            ),
+            'del' => array(
+                'synonyms' => array('s')
+            ),
+            'blockquote' => array(),
+            'ul' => array(),
+            'ol' => array(),
+            'li' => array(),
+            'a' => array(
+                'attributes' => array('href', 'target')
+            ),
+            'hr' => array(),
+            'br' => array()
+        )
+    );
+
+    // add config: Standard (No Headings)
+    $configs['Standard (No Headings)'] = array(
+        'toolbars' => array(
+            1 => array('bold', 'italic', 'underline', 'strikethrough', 'blockquote', 'bullist', 'numlist', 'link', 'hr', 'undo', 'redo', 'removeformat', 'fullscreen')
+        ),
+        'elements' => array(
+            'p' => array(),
+            'strong' => array(
+                'synonyms' => array('b')
+            ),
+            'em' => array(
+                'synonyms' => array('i')
+            ),
+            'span' => array(
+                'styles' => array('text-decoration')
+            ),
+            'del' => array(
+                'synonyms' => array('s')
+            ),
+            'blockquote' => array(),
+            'ul' => array(),
+            'ol' => array(),
+            'li' => array(),
+            'a' => array(
+                'attributes' => array('href', 'target')
+            ),
+            'hr' => array(),
+            'br' => array()
+        )
+    );
+
+    // add config: Minimal
+    $configs['Minimal'] = array(
+        'toolbars' => array(
+            1 => array('bold' , 'italic', 'link')
+        ),
+        'elements' => array(
+            'p' => array(),
+            'strong' => array(
+                'synonyms' => array('b')
+            ),
+            'em' => array(
+                'synonyms' => array('i')
+            ),
+            'a' => array(
+                'attributes' => array('href', 'target')
+            ),
+            'br' => array()
+        )
+    );
     
-    return $init;
+    // add config: Minimal (No Links)
+    $configs['Minimal (No Links)'] = array(
+        'toolbars' => array(
+            1 => array('bold' , 'italic')
+        ),
+        'elements' => array(
+            'p' => array(),
+            'strong' => array(
+                'synonyms' => array('b')
+            ),
+            'em' => array(
+                'synonyms' => array('i')
+            ),
+            'br' => array()
+        )
+    );
+
+
+    // process configs
+    $processed_configs = array();
+    foreach ($configs as $config_name => $config_data) {
+        $processed_data = array();
+
+        // add (unsanitzed) name to data
+        $processed_data['label'] = $config_name;
+
+        // add toolbars to data
+        $processed_data['toolbars'] = $config_data['toolbars'];
+
+        // generate block_formats string
+        if ($config_data['formats']) {
+            $formats_list = array();
+            foreach ($config_data['formats'] as $format_tag => $format_label) {
+                $formats_list[] = $format_label . '=' . $format_tag;
+            }
+
+            $processed_data['formats'] = implode(';', $formats_list);
+        }
+
+        // generate valid_styles array
+        if ($config_data['elements'] || $config_data['global_styles']) {
+            $styles_list = array();
+            
+            if ($config_data['global_styles']) {
+                $styles_list['*'] = implode(',', $config_data['global_styles']);
+            }
+            if ($config_data['elements']) {
+                foreach ($config_data['elements'] as $element_tag => $element_options) {
+                    if ($element_options['styles']) {
+                        $styles_list[$element_tag] = implode(',', $element_options['styles']);
+                    }
+                }
+            }
+
+            if ($styles_list) {
+                $processed_data['styles'] = $styles_list;
+            }
+        }
+
+        // generate valid_elements string
+        if ($config_data['elements']) {
+            $elements_list = array();
+
+            if ($processed_data['styles']) {
+                $elements_list[] = '@[style]'; // ensure that the style attribute is allowed if there are valid styles specified (this has to be first in the list)
+            }
+
+            foreach ($config_data['elements'] as $element_tag => $element_options) {
+                $element_attribute_string = '';
+                if ($element_options['attributes']) {
+                    $element_attribute_string = '[' . implode('|', $element_options['attributes']) . ']';
+                }
+
+                if ($element_options['synonyms']) {
+                    foreach ($element_options['synonyms'] as $synonym) {
+                        $elements_list[] = $element_tag . '/' . $synonym . $element_attribute_string;
+                    }
+                } else {
+                    $elements_list[] = $element_tag . $element_attribute_string;
+                }
+            }
+
+            $processed_data['elements'] = implode(',', $elements_list);
+        }
+
+        // add processed data to array
+        $processed_configs[str_replace( '-', '_', sanitize_title($config_name))] = $processed_data;
+    }
+
+    return $processed_configs;
 }
-add_filter('tiny_mce_before_init', 'ks_tinymce_paste_as_text');
+
+function ks_configure_tinymce($mce_init, $config_name) {
+    $wysiwyg_configs = ks_wysiwyg_configs();
+
+    $config_name = str_replace( '-', '_', sanitize_title($config_name));
+
+    if ($wysiwyg_configs[$config_name]) {
+        $config = $wysiwyg_configs[$config_name];
+
+        // update toolbars
+        $mce_init['toolbar1'] = $config['toolbars'][1] ? implode(',', $config['toolbars'][1]) : '';
+        $mce_init['toolbar2'] = $config['toolbars'][2] ? implode(',', $config['toolbars'][2]) : '';
+        $mce_init['toolbar3'] = $config['toolbars'][3] ? implode(',', $config['toolbars'][3]) : '';
+        $mce_init['toolbar4'] = $config['toolbars'][4] ? implode(',', $config['toolbars'][4]) : '';
+
+        // update block_formats setting
+        if ($config['formats']) {
+            $mce_init['block_formats'] = $config['formats'];
+        }
+
+        // update valid_elements setting
+        if ($config['elements']) {
+            $mce_init['valid_elements'] = $config['elements'];
+        }
+
+        // update valid_styles setting
+        if ($config['styles']) {
+            $mce_init['valid_styles'] = $config['styles'];
+        }
+    }
+
+    return $mce_init;
+}
 
 
 /**
- * Customize ACF WYSIWYG toolbars
+ * Add custom WYSIWYG toolbars to ACF
  */
 function ks_acf_toolbars($toolbars) {
-    // Add Standard toolbar
-    $toolbars['Standard'] = array();
-    $toolbars['Standard'][1] = array('formatselect', 'bold', 'italic', 'underline', 'strikethrough', 'blockquote', 'bullist', 'numlist', 'link', 'hr', 'undo', 'redo', 'removeformat', 'fullscreen');
-    
-    // Add Standard (No Headings) toolbar
-    $toolbars['Standard (No Headings)'] = array();
-    $toolbars['Standard (No Headings)'][1] = array('bold', 'italic', 'underline', 'strikethrough', 'blockquote', 'bullist', 'numlist', 'link', 'hr', 'undo', 'redo', 'removeformat', 'fullscreen');
-    
-    // Add Minimal toolbar
-	$toolbars['Minimal'] = array();
-	$toolbars['Minimal'][1] = array('bold' , 'italic', 'link');
-    
-    // Add Minimal (No Links) toolbar
-	$toolbars['Minimal (No Links)'] = array();
-	$toolbars['Minimal (No Links)'][1] = array('bold' , 'italic');
+    $wysiwyg_configs = ks_wysiwyg_configs();
+
+    if ($wysiwyg_configs) {
+        $toolbars = array();
+        foreach ($wysiwyg_configs as $config) {
+            $toolbars[$config['label']] = $config['toolbars'];
+        }
+    }
     
 	return $toolbars;
 }
 add_filter('acf/fields/wysiwyg/toolbars' , 'ks_acf_toolbars'); // add toolbars
-
-function ks_acf_wysiwyg_strip_tags($value, $post_id, $field) {
-    if ($field['enable_strip_tags']) {
-        if ($field['toolbar'] == 'basic') {
-            $value = strip_tags($value, '<p><strong><em><span><a><br><blockquote><del><ul><ol><li>');
-        } elseif ($field['toolbar'] == 'standard') {
-            $value = strip_tags($value, '<p><h2><h3><h4><h5><h6><strong><em><span><del><blockquote><ul><ol><li><a><hr><br>');
-        } elseif ($field['toolbar'] == 'standard_no_headings') {
-            $value = strip_tags($value, '<p><strong><em><span><del><blockquote><ul><ol><li><a><hr><br>');
-        } elseif ($field['toolbar'] == 'minimal') {
-            $value = strip_tags($value, '<p><strong><em><a><br>');
-        } elseif ($field['toolbar'] == 'minimal_no_links') {
-            $value = strip_tags($value, '<p><strong><em><br>');
-        }
-    }
-    
-    return $value;
-}
-add_filter('acf/format_value/type=wysiwyg', 'ks_acf_wysiwyg_strip_tags', 10, 3); // strip tags from WYSIWYG content based on toolbar
-
-function ks_acf_wysiwyg_strip_tags_setting($field) {
-	acf_render_field_setting($field, array(
-		'label'	=> 'Strip Tags Based on Toolbar',
-        'instructions' => 'HTML tags not supported by the selected toolbar will be stripped',
-		'name' => 'enable_strip_tags',
-		'type' => 'true_false',
-        'ui' => 1
-	));
-}
-add_action('acf/render_field_settings/type=wysiwyg', 'ks_acf_wysiwyg_strip_tags_setting'); // add setting to enable/disable
-
-function ks_tinymce_toolbar_row_from_acf($acf_name, $row) {
-    // allow pulling the ACF toolbars elsewhere
-    if (class_exists('acf_field_wysiwyg')) {
-        $acf_toolbars = (new acf_field_wysiwyg)->get_toolbars();
-        $toolbar_row = $acf_toolbars[$acf_name][$row];
-        
-        if (isset($toolbar_row)) {
-            return $toolbar_row;
-        }
-    }
-    
-    return array();
-}
-
-
-/**
- * Limit WYSIWYG format optons to H2-H6 and Text
- */
-function ks_wysiwyg_block_formats($args) {
-    $args['block_formats'] = 'Text=p;Heading 2=h2;Heading 3=h3;Heading 4=h4;Heading 5=h5;Heading 6=h6';
-    
-    return $args;
-}
-add_filter('tiny_mce_before_init', 'ks_wysiwyg_block_formats');
 
 
 /**
