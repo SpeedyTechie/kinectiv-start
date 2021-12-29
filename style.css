@@ -405,3 +405,47 @@ a:active {
 /*--------------------------------------------------------------
 # Blocks
 --------------------------------------------------------------*/
+/*--------------------------------------------------------------
+## Background Image
+--------------------------------------------------------------*/
+.bg-image {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+}
+.bg-image_repeat_x {
+    background-repeat: repeat-x;
+}
+.bg-image_repeat_y {
+    background-repeat: repeat-y;
+}
+.bg-image_repeat_both {
+    background-repeat: repeat;
+}
+.bg-image_size_contain {
+    background-size: contain;
+}
+.bg-image_pos_left-top {
+    background-position: left top;
+}
+.bg-image_pos_left-center {
+    background-position: left center;
+}
+.bg-image_pos_left-bottom {
+    background-position: left bottom;
+}
+.bg-image_pos_center-top {
+    background-position: center top;
+}
+.bg-image_pos_center-bottom {
+    background-position: center bottom;
+}
+.bg-image_pos_right-top {
+    background-position: right top;
+}
+.bg-image_pos_right-center {
+    background-position: right center;
+}
+.bg-image_pos_right-bottom {
+    background-position: right bottom;
+}
