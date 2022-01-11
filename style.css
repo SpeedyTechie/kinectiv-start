@@ -322,6 +322,47 @@ address {
 	margin: 0 0 1.5em;
 }
 
+@media (max-width: 1150px) {
+	body,
+	button,
+	input,
+	select,
+	optgroup,
+	textarea {
+		font-size: 17px;
+	}
+}
+@media (max-width: 850px) {
+	body,
+	button,
+	input,
+	select,
+	optgroup,
+	textarea {
+		font-size: 16px;
+	}
+}
+@media (max-width: 700px) {
+	body,
+	button,
+	input,
+	select,
+	optgroup,
+	textarea {
+		font-size: 15px;
+	}
+}
+@media (max-width: 450px) {
+	body,
+	button,
+	input,
+	select,
+	optgroup,
+	textarea {
+		font-size: 14px;
+	}
+}
+
 /*--------------------------------------------------------------
 # Elements
 --------------------------------------------------------------*/
@@ -799,5 +840,82 @@ a:active {
 	.section__content_x_none {
 		padding-left: 0;
 		padding-right: 0;
+	}
+}
+
+/*--------------------------------------------------------------
+## Text
+--------------------------------------------------------------*/
+.text {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.7;
+}
+.text_sm {
+    font-size: 14px;
+}
+.text_lg {
+    font-size: 24px;
+    line-height: 1.4;
+}
+.text_wrap p {
+    margin: 0 0 0.8em;
+}
+.text_wrap p:last-child {
+    margin-bottom: 0;
+}
+
+@media (max-width: 1150px) {
+	.text {
+		font-size: 17px;
+	}
+	.text_sm {
+		font-size: 14px;
+	}
+	.text_lg {
+		font-size: 22px;
+	}
+}
+@media (max-width: 850px) {
+	.text {
+		font-size: 16px;
+	}
+	.text_sm {
+		font-size: 14px;
+	}
+	.text_lg {
+		font-size: 20px;
+	}
+}
+@media (max-width: 700px) {
+	.text {
+		font-size: 15px;
+	}
+	.text_sm {
+		font-size: 13px;
+	}
+	.text_lg {
+		font-size: 20px;
+	}
+}
+@media (max-width: 550px) {
+	.text_lg {
+		font-size: 19px;
+	}
+}
+@media (max-width: 450px) {
+	.text {
+		font-size: 14px;
+	}
+	.text_sm {
+		font-size: 13px;
+	}
+	.text_lg {
+		font-size: 18px;
+	}
+}
+@media (max-width: 400px) {
+	.text_sm {
+		font-size: 12px;
 	}
 }
