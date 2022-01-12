@@ -31,7 +31,7 @@ A WordPress starter theme for Kinectiv websites
 * Update the `background-color` of `body` in the `Elements` section in `style.css` if necessary. This color is used to fill extra space on screens wider than 2100px.
 * Update the `background-color` of `.site` in the `Content` section in `style.css` if necessary. This is the main background color of the site.
 * Update the default link styles in the `Links` section of `style.css`.
-* As needed for your theme, update the default styles in the `Section`, `Title`, and `Text` sections in `style.css`.
+* As needed for your theme, update the default styles in the `Section`, `Title`, `Text`, and `Long-Form Text` sections in `style.css`.
 * If your theme will not use video embeds, remove the `initFitvids()` function and call from `js/src/functions.js` and delete `js/src/jquery.fitvids.js`.
 
 #### Other Notes

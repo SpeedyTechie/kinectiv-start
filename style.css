@@ -375,10 +375,10 @@ html {
 	box-sizing: inherit;
 }
 body {
-	background: #eee;
+	background: #f3f3f3;
 }
 hr {
-	background-color: #ccc;
+	background-color: #f3f3f3;
 	border: 0;
 	height: 1px;
 	margin-bottom: 1.5em;
@@ -1050,5 +1050,201 @@ a:active {
 @media (max-width: 400px) {
 	.text_sm {
 		font-size: 12px;
+	}
+}
+
+/*--------------------------------------------------------------
+## Long-Form Text
+--------------------------------------------------------------*/
+.long-text {
+	font-size: 18px;
+    line-height: 1.7;
+}
+.long-text::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+.long-text h1,
+.long-text h2,
+.long-text h3,
+.long-text h4,
+.long-text h5,
+.long-text h6 {
+    margin: 1.25em 0 0;
+	font-weight: 700;
+	line-height: 1.25;
+}
+.long-text h1 {
+	font-size: 50px;
+}
+.long-text h2 {
+    font-size: 36px;
+}
+.long-text h3 {
+	color: #6d6d6d;
+    font-size: 24px;
+    font-weight: 400;
+    clear: none;
+}
+.long-text h4 {
+    font-size: 20px;
+    clear: none;
+}
+.long-text h5,
+.long-text h6 {
+	color: #6d6d6d;
+    font-size: 18px;
+	font-weight: 400;
+    clear: none;
+}
+.long-text p {
+    margin: 1em 0;
+}
+.long-text blockquote {
+    border-left: 5px solid #f3f3f3;
+    margin: 1.5em 0;
+    padding-left: 1.5em;
+}
+.long-text blockquote p {
+    margin: 0.8em 0;
+}
+.long-text ul,
+.long-text ol {
+    margin: 1.5em 0;
+}
+.long-text li > ul,
+.long-text li > ol {
+	margin: 0;
+}
+.long-text hr {
+	height: 5px;
+    margin: 1.5em 0;
+}
+.long-text h1:first-child,
+.long-text h2:first-child,
+.long-text h3:first-child,
+.long-text h4:first-child,
+.long-text h5:first-child,
+.long-text h6:first-child,
+.long-text p:first-child,
+.long-text blockquote:first-child,
+.long-text ul:first-child,
+.long-text ol:first-child,
+.long-text hr:first-child {
+	margin-top: 0;
+}
+.long-text p:last-child,
+.long-text blockquote:last-child,
+.long-text ul:last-child,
+.long-text ol:last-child,
+.long-text hr:last-child {
+	margin-bottom: 0;
+}
+
+@media (max-width: 1150px) {
+	.long-text {
+		font-size: 17px;
+	}
+	.long-text h1 {
+		font-size: 44px;
+	}
+	.long-text h2 {
+		font-size: 32px;
+	}
+	.long-text h3 {
+		font-size: 22px;
+	}
+	.long-text h4 {
+		font-size: 20px;
+	}
+	.long-text h5,
+	.long-text h6 {
+		font-size: 17px;
+	}
+}
+@media (max-width: 850px) {
+	.long-text {
+		font-size: 16px;
+	}
+	.long-text h1 {
+		font-size: 38px;
+	}
+	.long-text h2 {
+		font-size: 28px;
+	}
+	.long-text h3 {
+		font-size: 20px;
+	}
+	.long-text h4 {
+		font-size: 18px;
+	}
+	.long-text h5,
+	.long-text h6 {
+		font-size: 16px;
+	}
+	.long-text blockquote {
+		border-left-width: 4px;
+	}
+	.long-text hr {
+		height: 4px;
+	}
+}
+@media (max-width: 700px) {
+	.long-text {
+		font-size: 15px;
+	}
+	.long-text h5,
+	.long-text h6 {
+		font-size: 15px;
+	}
+}
+@media (max-width: 550px) {
+	.long-text h1 {
+		font-size: 32px;
+	}
+	.long-text h2 {
+		font-size: 26px;
+	}
+	.long-text h3 {
+		font-size: 19px;
+	}
+	.long-text h4 {
+		font-size: 17px;
+	}
+}
+@media (max-width: 450px) {
+	.long-text {
+		font-size: 14px;
+	}
+	.long-text h1 {
+		font-size: 28px;
+	}
+	.long-text h2 {
+		font-size: 24px;
+	}
+	.long-text h3 {
+		font-size: 18px;
+	}
+	.long-text h4 {
+		font-size: 16px;
+	}
+	.long-text h5,
+	.long-text h6 {
+		font-size: 14px;
+	}
+	.long-text blockquote {
+		border-left-width: 3px;
+	}
+	.long-text hr {
+		height: 3px;
+	}
+}
+@media (max-width: 350px) {
+	.long-text h1 {
+		font-size: 24px;
+	}
+	.long-text h2 {
+		font-size: 22px;
 	}
 }
