@@ -391,8 +391,7 @@ function ks_wysiwyg_configs() {
             'h2' => 'Heading 2',
             'h3' => 'Heading 3',
             'h4' => 'Heading 4',
-            'h5' => 'Heading 5',
-            'h6' => 'Heading 6'
+            'h5' => 'Heading 5'
         ),
         'elements' => array(
             'p' => array(),
@@ -400,7 +399,6 @@ function ks_wysiwyg_configs() {
             'h3' => array(),
             'h4' => array(),
             'h5' => array(),
-            'h6' => array(),
             'strong' => array(
                 'synonyms' => array('b')
             ),
