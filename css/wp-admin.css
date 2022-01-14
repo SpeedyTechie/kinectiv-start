@@ -17,6 +17,15 @@
 }
 
 /*--------------------------------------------------------------
+# Media Modal
+--------------------------------------------------------------*/
+.media-modal .media-menu #menu-item-gallery,
+.media-modal .media-menu #menu-item-playlist,
+.media-modal .media-menu #menu-item-video-playlist {
+    display: none !important;
+}
+
+/*--------------------------------------------------------------
 # Gravity Forms
 --------------------------------------------------------------*/
 /* Form Settings */

@@ -23,6 +23,7 @@
     acf.addFilter('wysiwyg_tinymce_settings', function(mceInit, id, field){
         if (field.data.toolbar in wpVars.wysiwygConfigs) {
             var config = wpVars.wysiwygConfigs[field.data.toolbar];
+            var mediaAllowed = field.$el.find('.wp-media-buttons').length > 0;
 
             // update block_formats setting
             if ('formats' in config) {
@@ -30,12 +31,16 @@
             }
 
             // update valid_elements setting
-            if ('elements' in config) {
+            if (mediaAllowed && 'elements_with_media' in config) {
+                mceInit['valid_elements'] = config['elements_with_media'];
+            } else if ('elements' in config) {
                 mceInit['valid_elements'] = config['elements'];
             }
 
             // update valid_styles setting
-            if ('styles' in config) {
+            if (mediaAllowed && 'styles_with_media' in config) {
+                mceInit['valid_styles'] = config['styles_with_media'];
+            } else if ('styles' in config) {
                 mceInit['valid_styles'] = config['styles'];
             }
         }

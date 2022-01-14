@@ -1141,6 +1141,33 @@ a:active {
 .long-text hr:last-child {
 	margin-bottom: 0;
 }
+.long-text figure {
+    max-width: 100%;
+	margin: 0;
+}
+.long-text .alignleft {
+	float: left;
+	margin: 0 1.5em 1em 0;
+}
+.long-text .alignright {
+	float: right;
+    margin: 0 0 1em 1.5em;
+}
+.long-text .aligncenter {
+	display: block;
+	margin: 0 auto 1em;
+	clear: both;
+}
+.long-text .wp-caption img {
+    display: block;
+}
+.long-text .wp-caption-text {
+	margin-top: 0.5em;
+    color: #6d6d6d;
+    font-style: italic;
+	font-size: 14px;
+	line-height: 1.4;
+}
 
 @media (max-width: 1150px) {
 	.long-text {
@@ -1198,6 +1225,9 @@ a:active {
 	.long-text h6 {
 		font-size: 15px;
 	}
+	.long-text .wp-caption-text {
+		font-size: 13px;
+	}
 }
 @media (max-width: 550px) {
 	.long-text h1 {
@@ -1238,6 +1268,11 @@ a:active {
 	}
 	.long-text hr {
 		height: 3px;
+	}
+}
+@media (max-width: 400px) {
+	.long-text .wp-caption-text {
+		font-size: 12px;
 	}
 }
 @media (max-width: 350px) {

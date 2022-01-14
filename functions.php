@@ -153,7 +153,7 @@ function ks_gform_confirmation_tiny_mce_before_init($mce_init, $editor_id) {
     $gf_subview = GFSettings::get_subview();
 
     if ($editor_id == '_gform_setting_message' && $gf_subview == 'confirmation') {
-        $mce_init = ks_configure_tinymce($mce_init, 'Standard');
+        $mce_init = ks_configure_tinymce($mce_init, 'Standard', false);
     }
 
     return $mce_init;
@@ -416,10 +416,28 @@ function ks_wysiwyg_configs() {
             'ol' => array(),
             'li' => array(),
             'a' => array(
-                'attributes' => array('href', 'target')
+                'attributes' => array('href', 'target', 'rel')
             ),
             'hr' => array(),
             'br' => array()
+        ),
+        'media_elements' => array(
+            'img' => array(
+                'attributes' => array('src', 'alt', 'width', 'height', 'class', 'title', 'data-mce-src')
+            ),
+            'div' => array(
+                'attributes' => array('!class<mceTemp')
+            ),
+            'dl' => array(
+                'attributes' => array('id', '!class', 'data-mce-style'),
+                'styles' => array('width')
+            ),
+            'dt' => array(
+                'attributes' => array('!class<wp-caption-dt')
+            ),
+            'dd' => array(
+                'attributes' => array('!class<wp-caption-dd')
+            )
         )
     );
 
@@ -451,6 +469,24 @@ function ks_wysiwyg_configs() {
             ),
             'hr' => array(),
             'br' => array()
+        ),
+        'media_elements' => array(
+            'img' => array(
+                'attributes' => array('src', 'alt', 'width', 'height', 'class', 'title', 'data-mce-src')
+            ),
+            'div' => array(
+                'attributes' => array('!class<mceTemp')
+            ),
+            'dl' => array(
+                'attributes' => array('id', '!class', 'data-mce-style'),
+                'styles' => array('width')
+            ),
+            'dt' => array(
+                'attributes' => array('!class<wp-caption-dt')
+            ),
+            'dd' => array(
+                'attributes' => array('!class<wp-caption-dd')
+            )
         )
     );
 
@@ -533,6 +569,28 @@ function ks_wysiwyg_configs() {
             }
         }
 
+        // generate valid_styles array for when media is allowed
+        if ($config_data['media_elements']) {
+            $styles_list = array();
+
+            if ($config_data['elements']) {
+                $config_data['media_elements'] = array_merge($config_data['elements'], $config_data['media_elements']);
+            }
+
+            if ($config_data['global_styles']) {
+                $styles_list['*'] = implode(',', $config_data['global_styles']);
+            }
+            foreach ($config_data['media_elements'] as $element_tag => $element_options) {
+                if ($element_options['styles']) {
+                    $styles_list[$element_tag] = implode(',', $element_options['styles']);
+                }
+            }
+
+            if ($styles_list) {
+                $processed_data['styles_with_media'] = $styles_list;
+            }
+        }
+
         // generate valid_elements string
         if ($config_data['elements']) {
             $elements_list = array();
@@ -540,7 +598,6 @@ function ks_wysiwyg_configs() {
             if ($processed_data['styles']) {
                 $elements_list[] = '@[style]'; // ensure that the style attribute is allowed if there are valid styles specified (this has to be first in the list)
             }
-
             foreach ($config_data['elements'] as $element_tag => $element_options) {
                 $element_attribute_string = '';
                 if ($element_options['attributes']) {
@@ -559,6 +616,35 @@ function ks_wysiwyg_configs() {
             $processed_data['elements'] = implode(',', $elements_list);
         }
 
+        // generate valid_elements string for when media is allowed
+        if ($config_data['media_elements']) {
+            $elements_list = array();
+
+            if ($config_data['elements']) {
+                $config_data['media_elements'] = array_merge($config_data['elements'], $config_data['media_elements']);
+            }
+
+            if ($processed_data['styles_with_media'] || $processed_data['styles']) {
+                $elements_list[] = '@[style]'; // ensure that the style attribute is allowed if there are valid styles specified (this has to be first in the list)
+            }
+            foreach ($config_data['media_elements'] as $element_tag => $element_options) {
+                $element_attribute_string = '';
+                if ($element_options['attributes']) {
+                    $element_attribute_string = '[' . implode('|', $element_options['attributes']) . ']';
+                }
+
+                if ($element_options['synonyms']) {
+                    foreach ($element_options['synonyms'] as $synonym) {
+                        $elements_list[] = $element_tag . '/' . $synonym . $element_attribute_string;
+                    }
+                } else {
+                    $elements_list[] = $element_tag . $element_attribute_string;
+                }
+            }
+
+            $processed_data['elements_with_media'] = implode(',', $elements_list);
+        }
+
         // add processed data to array
         $processed_configs[str_replace( '-', '_', sanitize_title($config_name))] = $processed_data;
     }
@@ -566,7 +652,7 @@ function ks_wysiwyg_configs() {
     return $processed_configs;
 }
 
-function ks_configure_tinymce($mce_init, $config_name) {
+function ks_configure_tinymce($mce_init, $config_name, $media_allowed) {
     $wysiwyg_configs = ks_wysiwyg_configs();
 
     $config_name = str_replace( '-', '_', sanitize_title($config_name));
@@ -586,12 +672,16 @@ function ks_configure_tinymce($mce_init, $config_name) {
         }
 
         // update valid_elements setting
-        if ($config['elements']) {
+        if ($media_allowed && $config['elements_with_media']) {
+            $mce_init['valid_elements'] = $config['elements_with_media'];
+        } elseif ($config['elements']) {
             $mce_init['valid_elements'] = $config['elements'];
         }
 
         // update valid_styles setting
-        if ($config['styles']) {
+        if ($media_allowed && $config['styles_with_media']) {
+            $mce_init['valid_styles'] = $config['styles_with_media'];
+        } elseif ($config['styles']) {
             $mce_init['valid_styles'] = $config['styles'];
         }
     }
