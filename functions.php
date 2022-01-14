@@ -465,7 +465,7 @@ function ks_wysiwyg_configs() {
             'ol' => array(),
             'li' => array(),
             'a' => array(
-                'attributes' => array('href', 'target')
+                'attributes' => array('href', 'target', 'rel')
             ),
             'hr' => array(),
             'br' => array()
@@ -504,7 +504,7 @@ function ks_wysiwyg_configs() {
                 'synonyms' => array('i')
             ),
             'a' => array(
-                'attributes' => array('href', 'target')
+                'attributes' => array('href', 'target', 'rel')
             ),
             'br' => array()
         )
