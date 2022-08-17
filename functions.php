@@ -230,8 +230,8 @@ add_action('admin_init', 'ks_disable_comments_dashboard'); // remove comments me
 function ks_disable_search($query, $error = true) {
     if (is_search() && !is_admin()) {
         $query->is_search = false;
-        $query->query_vars[s] = false;
-        $query->query[s] = false;
+        $query->query_vars['s'] = false;
+        $query->query['s'] = false;
 
         if ($error == true) {
             $query->is_404 = true;
