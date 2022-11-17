@@ -185,7 +185,7 @@ add_filter('gform_disable_form_theme_css', '__return_true');
 function ks_disable_comments_post_types_support() {
 	$post_types = get_post_types();
 	foreach ($post_types as $post_type) {
-		if(post_type_supports($post_type, 'comments')) {
+		if (post_type_supports($post_type, 'comments')) {
 			remove_post_type_support($post_type, 'comments');
 			remove_post_type_support($post_type, 'trackbacks');
 		}
@@ -298,7 +298,7 @@ add_action('wp_before_admin_bar_render', 'ks_disable_posts_admin_bar'); // remov
  * Disable archive pages for Posts
  */
 function ks_disable_post_archives($query){
-    if((!is_front_page() && is_home()) || is_category() || is_tag() || is_author() || is_date()) {
+    if ((!is_front_page() && is_home()) || is_category() || is_tag() || is_author() || is_date()) {
         global $wp_query;
         $wp_query->set_404();
         status_header(404);
@@ -541,7 +541,7 @@ function ks_wysiwyg_configs() {
         $processed_data['toolbars'] = $config_data['toolbars'];
 
         // generate block_formats string
-        if ($config_data['formats']) {
+        if (isset($config_data['formats'])) {
             $formats_list = array();
             foreach ($config_data['formats'] as $format_tag => $format_label) {
                 $formats_list[] = $format_label . '=' . $format_tag;
@@ -551,15 +551,15 @@ function ks_wysiwyg_configs() {
         }
 
         // generate valid_styles array
-        if ($config_data['elements'] || $config_data['global_styles']) {
+        if (isset($config_data['elements']) || isset($config_data['global_styles'])) {
             $styles_list = array();
             
-            if ($config_data['global_styles']) {
+            if (isset($config_data['global_styles'])) {
                 $styles_list['*'] = implode(',', $config_data['global_styles']);
             }
-            if ($config_data['elements']) {
+            if (isset($config_data['elements'])) {
                 foreach ($config_data['elements'] as $element_tag => $element_options) {
-                    if ($element_options['styles']) {
+                    if (isset($element_options['styles'])) {
                         $styles_list[$element_tag] = implode(',', $element_options['styles']);
                     }
                 }
@@ -571,18 +571,18 @@ function ks_wysiwyg_configs() {
         }
 
         // generate valid_styles array for when media is allowed
-        if ($config_data['media_elements']) {
+        if (isset($config_data['media_elements'])) {
             $styles_list = array();
 
-            if ($config_data['elements']) {
+            if (isset($config_data['elements'])) {
                 $config_data['media_elements'] = array_merge($config_data['elements'], $config_data['media_elements']);
             }
 
-            if ($config_data['global_styles']) {
+            if (isset($config_data['global_styles'])) {
                 $styles_list['*'] = implode(',', $config_data['global_styles']);
             }
             foreach ($config_data['media_elements'] as $element_tag => $element_options) {
-                if ($element_options['styles']) {
+                if (isset($element_options['styles'])) {
                     $styles_list[$element_tag] = implode(',', $element_options['styles']);
                 }
             }
@@ -593,19 +593,19 @@ function ks_wysiwyg_configs() {
         }
 
         // generate valid_elements string
-        if ($config_data['elements']) {
+        if (isset($config_data['elements'])) {
             $elements_list = array();
 
-            if ($processed_data['styles']) {
+            if (isset($processed_data['styles'])) {
                 $elements_list[] = '@[style]'; // ensure that the style attribute is allowed if there are valid styles specified (this has to be first in the list)
             }
             foreach ($config_data['elements'] as $element_tag => $element_options) {
                 $element_attribute_string = '';
-                if ($element_options['attributes']) {
+                if (isset($element_options['attributes'])) {
                     $element_attribute_string = '[' . implode('|', $element_options['attributes']) . ']';
                 }
 
-                if ($element_options['synonyms']) {
+                if (isset($element_options['synonyms'])) {
                     foreach ($element_options['synonyms'] as $synonym) {
                         $elements_list[] = $element_tag . '/' . $synonym . $element_attribute_string;
                     }
@@ -618,23 +618,23 @@ function ks_wysiwyg_configs() {
         }
 
         // generate valid_elements string for when media is allowed
-        if ($config_data['media_elements']) {
+        if (isset($config_data['media_elements'])) {
             $elements_list = array();
 
-            if ($config_data['elements']) {
+            if (isset($config_data['elements'])) {
                 $config_data['media_elements'] = array_merge($config_data['elements'], $config_data['media_elements']);
             }
 
-            if ($processed_data['styles_with_media'] || $processed_data['styles']) {
+            if (isset($processed_data['styles_with_media']) || isset($processed_data['styles'])) {
                 $elements_list[] = '@[style]'; // ensure that the style attribute is allowed if there are valid styles specified (this has to be first in the list)
             }
             foreach ($config_data['media_elements'] as $element_tag => $element_options) {
                 $element_attribute_string = '';
-                if ($element_options['attributes']) {
+                if (isset($element_options['attributes'])) {
                     $element_attribute_string = '[' . implode('|', $element_options['attributes']) . ']';
                 }
 
-                if ($element_options['synonyms']) {
+                if (isset($element_options['synonyms'])) {
                     foreach ($element_options['synonyms'] as $synonym) {
                         $elements_list[] = $element_tag . '/' . $synonym . $element_attribute_string;
                     }
@@ -658,31 +658,31 @@ function ks_configure_tinymce($mce_init, $config_name, $media_allowed) {
 
     $config_name = str_replace( '-', '_', sanitize_title($config_name));
 
-    if ($wysiwyg_configs[$config_name]) {
+    if (isset($wysiwyg_configs[$config_name])) {
         $config = $wysiwyg_configs[$config_name];
 
         // update toolbars
-        $mce_init['toolbar1'] = $config['toolbars'][1] ? implode(',', $config['toolbars'][1]) : '';
-        $mce_init['toolbar2'] = $config['toolbars'][2] ? implode(',', $config['toolbars'][2]) : '';
-        $mce_init['toolbar3'] = $config['toolbars'][3] ? implode(',', $config['toolbars'][3]) : '';
-        $mce_init['toolbar4'] = $config['toolbars'][4] ? implode(',', $config['toolbars'][4]) : '';
+        $mce_init['toolbar1'] = isset($config['toolbars'][1]) ? implode(',', $config['toolbars'][1]) : '';
+        $mce_init['toolbar2'] = isset($config['toolbars'][2]) ? implode(',', $config['toolbars'][2]) : '';
+        $mce_init['toolbar3'] = isset($config['toolbars'][3]) ? implode(',', $config['toolbars'][3]) : '';
+        $mce_init['toolbar4'] = isset($config['toolbars'][4]) ? implode(',', $config['toolbars'][4]) : '';
 
         // update block_formats setting
-        if ($config['formats']) {
+        if (isset($config['formats'])) {
             $mce_init['block_formats'] = $config['formats'];
         }
 
         // update valid_elements setting
-        if ($media_allowed && $config['elements_with_media']) {
+        if ($media_allowed && isset($config['elements_with_media'])) {
             $mce_init['valid_elements'] = $config['elements_with_media'];
-        } elseif ($config['elements']) {
+        } elseif (isset($config['elements'])) {
             $mce_init['valid_elements'] = $config['elements'];
         }
 
         // update valid_styles setting
-        if ($media_allowed && $config['styles_with_media']) {
+        if ($media_allowed && isset($config['styles_with_media'])) {
             $mce_init['valid_styles'] = $config['styles_with_media'];
-        } elseif ($config['styles']) {
+        } elseif (isset($config['styles'])) {
             $mce_init['valid_styles'] = $config['styles'];
         }
     }
@@ -713,7 +713,7 @@ add_filter('acf/fields/wysiwyg/toolbars' , 'ks_acf_toolbars'); // add toolbars
  * Disable autoembed for ACF WYSIWYG fields (and add option to re-enable)
  */
 function ks_acf_wysiwyg_disable_auto_embed($value, $post_id, $field) {
-    if(!empty($GLOBALS['wp_embed']) && !$field['enable_autoembed']) {
+    if (!empty($GLOBALS['wp_embed']) && !$field['enable_autoembed']) {
 	   remove_filter('acf_the_content', array( $GLOBALS['wp_embed'], 'autoembed' ), 8);
     }
 	
@@ -722,7 +722,7 @@ function ks_acf_wysiwyg_disable_auto_embed($value, $post_id, $field) {
 add_filter('acf/format_value/type=wysiwyg', 'ks_acf_wysiwyg_disable_auto_embed', 10, 3); // disable autoembed
 
 function ks_acf_wysiwyg_disable_auto_embed_after($value, $post_id, $field) {
-    if(!empty($GLOBALS['wp_embed']) && !$field['enable_autoembed']) {
+    if (!empty($GLOBALS['wp_embed']) && !$field['enable_autoembed']) {
 	   add_filter('acf_the_content', array( $GLOBALS['wp_embed'], 'autoembed' ), 8);
     }
 	
