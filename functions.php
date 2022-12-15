@@ -738,7 +738,7 @@ function ks_acf_wysiwyg_disable_auto_embed_setting($field) {
         'ui' => 1
 	));
 }
-add_action('acf/render_field_settings/type=wysiwyg', 'ks_acf_wysiwyg_disable_auto_embed_setting'); // add setting to enable/disable
+add_action('acf/render_field_general_settings/type=wysiwyg', 'ks_acf_wysiwyg_disable_auto_embed_setting'); // add setting to enable/disable
 
 function ks_acf_wysiwyg_disable_auto_embed_class($field) {
     if (!$field['enable_autoembed']) {
@@ -767,9 +767,9 @@ function ks_acf_template_filter_setting($field) {
         'placeholder' => 'All page templates'
     ));
 }
-add_action('acf/render_field_settings/type=post_object', 'ks_acf_template_filter_setting'); // add setting to post object fields
-add_action('acf/render_field_settings/type=page_link', 'ks_acf_template_filter_setting'); // add setting to page_link fields
-add_action('acf/render_field_settings/type=relationship', 'ks_acf_template_filter_setting'); // add setting to relationship fields
+add_action('acf/render_field_general_settings/type=post_object', 'ks_acf_template_filter_setting'); // add setting to post object fields
+add_action('acf/render_field_general_settings/type=page_link', 'ks_acf_template_filter_setting'); // add setting to page_link fields
+add_action('acf/render_field_general_settings/type=relationship', 'ks_acf_template_filter_setting'); // add setting to relationship fields
 
 function ks_acf_template_filter_query($args, $field, $post_id) {
     if ($field['filter_template']) {
@@ -873,13 +873,13 @@ function ks_acf_multi_min_max_settings($field) {
         ));
     }
 }
-add_action('acf/render_field_settings/type=checkbox', 'ks_acf_multi_min_max_settings'); // add min/max settings to checkbox fields
-add_action('acf/render_field_settings/type=select', 'ks_acf_multi_min_max_settings'); // add min/max settings to select fields
-add_action('acf/render_field_settings/type=post_object', 'ks_acf_multi_min_max_settings'); // add min/max settings to post object fields
-add_action('acf/render_field_settings/type=page_link', 'ks_acf_multi_min_max_settings'); // add min/max settings to page link fields
-add_action('acf/render_field_settings/type=taxonomy', 'ks_acf_multi_min_max_settings'); // add min/max settings to taxonomy fields
-add_action('acf/render_field_settings/type=user', 'ks_acf_multi_min_max_settings'); // add min/max settings to user fields
-add_action('acf/render_field_settings/type=gf_select', 'ks_acf_multi_min_max_settings'); // add min/max settings to Gravity Form fields
+add_action('acf/render_field_general_settings/type=checkbox', 'ks_acf_multi_min_max_settings'); // add min/max settings to checkbox fields
+add_action('acf/render_field_general_settings/type=select', 'ks_acf_multi_min_max_settings'); // add min/max settings to select fields
+add_action('acf/render_field_general_settings/type=post_object', 'ks_acf_multi_min_max_settings'); // add min/max settings to post object fields
+add_action('acf/render_field_general_settings/type=page_link', 'ks_acf_multi_min_max_settings'); // add min/max settings to page link fields
+add_action('acf/render_field_general_settings/type=taxonomy', 'ks_acf_multi_min_max_settings'); // add min/max settings to taxonomy fields
+add_action('acf/render_field_general_settings/type=user', 'ks_acf_multi_min_max_settings'); // add min/max settings to user fields
+add_action('acf/render_field_general_settings/type=gf_select', 'ks_acf_multi_min_max_settings'); // add min/max settings to Gravity Form fields
 
 function ks_acf_multi_min_max_validation($valid, $value, $field, $input) {
     if ($valid) {
@@ -934,7 +934,7 @@ function ks_acf_wysiwyg_field_height_setting($field) {
         'append' => 'px'
 	));
 }
-add_action('acf/render_field_settings/type=wysiwyg', 'ks_acf_wysiwyg_field_height_setting'); // add setting to adjust field height
+add_action('acf/render_field_presentation_settings/type=wysiwyg', 'ks_acf_wysiwyg_field_height_setting'); // add setting to adjust field height
 
 function ks_acf_wysiwyg_field_height_script($field) {
     if ($field['editor_height']) { ?>
