@@ -692,6 +692,12 @@ function ks_configure_tinymce($mce_init, $config_name, $media_allowed) {
 
 
 /**
+ * Disable tabbed view for ACF field settings
+ */
+add_filter('acf/field_group/disable_field_settings_tabs', '__return_true');
+
+
+/**
  * Add custom WYSIWYG toolbars to ACF
  */
 function ks_acf_toolbars($toolbars) {
