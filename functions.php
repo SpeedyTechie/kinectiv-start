@@ -681,9 +681,9 @@ function ks_configure_tinymce($mce_init, $config_name, $media_allowed) {
 
         // update valid_styles setting
         if ($media_allowed && isset($config['styles_with_media'])) {
-            $mce_init['valid_styles'] = $config['styles_with_media'];
+            $mce_init['valid_styles'] = json_encode($config['styles_with_media'], JSON_UNESCAPED_SLASHES);
         } elseif (isset($config['styles'])) {
-            $mce_init['valid_styles'] = $config['styles'];
+            $mce_init['valid_styles'] = json_encode($config['styles'], JSON_UNESCAPED_SLASHES);
         }
     }
 
