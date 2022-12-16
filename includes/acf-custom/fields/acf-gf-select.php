@@ -99,16 +99,6 @@ class ks_acf_field_gf_select extends acf_field {
 		*  Please note that you must also have a matching $defaults value for the field name (font_size)
 		*/
 		
-        // allow_null
-		acf_render_field_setting( $field, array(
-			'label'			=> __('Allow Null?', 'acf'),
-			'instructions'	=> '',
-			'name'			=> 'allow_null',
-			'type'			=> 'true_false',
-			'ui'			=> 1
-		));
-        
-        // multiple
 		acf_render_field_setting( $field, array(
 			'label'			=> __('Select multiple values?', 'acf'),
 			'instructions'	=> '',
@@ -118,6 +108,28 @@ class ks_acf_field_gf_select extends acf_field {
 		));
 
 	}
+
+
+	/**
+		 * Renders the field settings used in the "Validation" tab.
+		 *
+		 * @since 6.0
+		 *
+		 * @param array $field The field settings array.
+		 * @return void
+		 */
+		function render_field_validation_settings( $field ) {
+			acf_render_field_setting(
+				$field,
+				array(
+					'label'        => __( 'Allow Null?', 'acf' ),
+					'instructions' => '',
+					'name'         => 'allow_null',
+					'type'         => 'true_false',
+					'ui'           => 1,
+				)
+			);
+		}
 	
 	
 	
