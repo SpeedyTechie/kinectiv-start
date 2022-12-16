@@ -40,7 +40,7 @@ function kinectiv_start_scripts() {
     
     wp_deregister_script('wp-embed');
     wp_deregister_script('jquery');
-    wp_enqueue_script('jquery', get_template_directory_uri() . '/js/jquery-3.6.0.min.js', array(), null, true);
+    wp_enqueue_script('jquery', get_template_directory_uri() . '/js/jquery-3.6.2.min.js', array(), null, true);
 	wp_enqueue_script('kinectiv-start-script', get_template_directory_uri() . '/js/script.min.js', array('jquery'), '0.1.0', true);
 }
 add_action('wp_enqueue_scripts', 'kinectiv_start_scripts');
