@@ -341,6 +341,7 @@ remove_action('wp_head', 'rest_output_link_wp_head'); // remove REST links
 function ks_dequeue_block_styles(){
     wp_dequeue_style('wp-block-library');
     wp_dequeue_style('global-styles');
+    wp_dequeue_style('classic-theme-styles');
 }
 add_action('wp_enqueue_scripts', 'ks_dequeue_block_styles', 100);
 
