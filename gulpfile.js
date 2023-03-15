@@ -12,6 +12,7 @@ const cssnanoConfig = {
         cssDeclarationSorter: false,
         colormin: false,
         mergeLonghand: false,
+        mergeRules: false,
         reduceInitial: false,
         reduceTransforms: false
     }]
