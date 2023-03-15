@@ -1,16 +1,19 @@
 const { src, dest, series, parallel, watch } = require('gulp');
 
-const autoprefixer = require('gulp-autoprefixer');
 const concat = require('gulp-concat');
 const rename = require('gulp-rename');
+const postcss = require('gulp-postcss');
 const uglify = require('gulp-uglify');
-const cleancss = require('gulp-clean-css');
+const autoprefixer = require('autoprefixer');
+const cssnano = require('cssnano');
 
 
 function css() {
     return src('style.css')
-        .pipe(autoprefixer())
-        .pipe(cleancss({rebase: false, inline: false, compatibility: 'ie9'}))
+        .pipe(postcss([
+            autoprefixer(),
+            cssnano()
+        ]))
         .pipe(rename('style.min.css'))
         .pipe(dest('.'));
 }
@@ -18,10 +21,14 @@ function css() {
 function vendorCss() {
     return src('css/src/*.css')
         .pipe(concat('vendor.css'))
-        .pipe(autoprefixer())
+        .pipe(postcss([
+            autoprefixer()
+        ]))
         .pipe(dest('css'))
         .pipe(rename('vendor.min.css'))
-        .pipe(cleancss({rebase: false, inline: false, compatibility: 'ie9'}))
+        .pipe(postcss([
+            cssnano()
+        ]))
         .pipe(dest('css'));
 }
 
