@@ -1,6 +1,6 @@
 {
     "name": "kinectiv-start",
-    "version": "1.6.6",
+    "version": "1.6.7",
     "description": "A WordPress starter theme for Kinectiv websites",
     "main": "gulpfile.js",
     "scripts": {
