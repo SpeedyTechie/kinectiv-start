@@ -7,12 +7,22 @@ const uglify = require('gulp-uglify');
 const autoprefixer = require('autoprefixer');
 const cssnano = require('cssnano');
 
+const cssnanoConfig = {
+    preset: ['default', {
+        cssDeclarationSorter: false,
+        colormin: false,
+        mergeLonghand: false,
+        reduceInitial: false,
+        reduceTransforms: false
+    }]
+};
+
 
 function css() {
     return src('style.css')
         .pipe(postcss([
             autoprefixer(),
-            cssnano()
+            cssnano(cssnanoConfig)
         ]))
         .pipe(rename('style.min.css'))
         .pipe(dest('.'));
@@ -27,7 +37,7 @@ function vendorCss() {
         .pipe(dest('css'))
         .pipe(rename('vendor.min.css'))
         .pipe(postcss([
-            cssnano()
+            cssnano(cssnanoConfig)
         ]))
         .pipe(dest('css'));
 }
